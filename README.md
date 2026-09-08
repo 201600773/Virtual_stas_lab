@@ -405,11 +405,9 @@ Full documentation
 Your Name — Creator and maintainer
 
 📧 Contact
-GitHub: @YOUR_USERNAME
+GitHub: @201600773
 
 Email: your.email@example.com
-
-Issues: Report here
 
 Made with ❤️ for the statistical community
 
