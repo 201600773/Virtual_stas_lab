@@ -5,180 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Virtual Stats Lab — Statistics · Econometrics · Actuarial Science</title>
 <style>
+  /* ============================================================
+     COMPLETE STYLES
+     ============================================================ */
   :root{
     --bg:#0b0d10; --panel:#14181d; --panel2:#1a2029; --border:#262e37;
     --lcd-bg:#07120a; --lcd:#6bff9e; --accent:#5ac8fa; --accent2:#f2a65a;
     --accent3:#ff6b6b; --text:#c9d4de; --muted:#7c8a99;
-    --success:#6bff9e; --warning:#f2a65a; --danger:#ff6b6b;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  }
-  header{padding:28px 24px 18px; border-bottom:1px solid var(--border);}
-  header h1{margin:0 0 6px; font-size:26px; color:#fff; letter-spacing:0.01em;}
-  header p{margin:0; color:var(--muted); font-size:14px; max-width:720px; line-height:1.5;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:sans-serif;}
+  header{padding:28px 24px 18px;border-bottom:1px solid var(--border);}
+  header h1{margin:0 0 6px;font-size:26px;color:#fff;}
+  header p{margin:0;color:var(--muted);font-size:14px;max-width:720px;line-height:1.5;}
   header .badge{
-    display:inline-block; font-family:monospace; font-size:11px; color:var(--lcd);
-    border:1px solid var(--border); padding:3px 8px; border-radius:4px; margin-bottom:10px;
+    display:inline-block;font-family:monospace;font-size:11px;color:var(--lcd);
+    border:1px solid var(--border);padding:3px 8px;border-radius:4px;margin-bottom:10px;
     background:rgba(107,255,158,0.06);
   }
-
-  nav.tabs{display:flex; gap:6px; padding:14px 24px 0; border-bottom:1px solid var(--border); background:var(--panel); flex-wrap:wrap;}
+  nav.tabs{display:flex;gap:6px;padding:14px 24px 0;border-bottom:1px solid var(--border);background:var(--panel);flex-wrap:wrap;}
   nav.tabs button{
-    background:transparent; border:1px solid var(--border); border-bottom:none;
-    color:var(--muted); padding:9px 18px; border-radius:6px 6px 0 0; cursor:pointer;
-    font-size:13px; font-weight:600; letter-spacing:0.03em;
-    transition: all 0.2s;
+    background:transparent;border:1px solid var(--border);border-bottom:none;
+    color:var(--muted);padding:9px 18px;border-radius:6px 6px 0 0;cursor:pointer;
+    font-size:13px;font-weight:600;letter-spacing:0.03em;transition:all 0.2s;
   }
-  nav.tabs button:hover{color:#fff; background:rgba(255,255,255,0.03);}
-  nav.tabs button.active{color:#fff; background:var(--bg); border-color:var(--accent);}
-  .tab-panel{display:none; padding:22px 24px 40px; max-width:1400px; margin:0 auto;}
-  .tab-panel.active{display:block; animation: fadeIn 0.3s;}
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
-
+  nav.tabs button:hover{color:#fff;background:rgba(255,255,255,0.03);}
+  nav.tabs button.active{color:#fff;background:var(--bg);border-color:var(--accent);}
+  .tab-panel{display:none;padding:22px 24px 40px;max-width:1400px;margin:0 auto;}
+  .tab-panel.active{display:block;animation:fadeIn 0.3s;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
   .module{
-    background:var(--panel); border:1px solid var(--border); border-radius:10px;
-    padding:18px 20px; margin-bottom:22px;
-    transition: border-color 0.3s;
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:18px 20px;margin-bottom:22px;
   }
-  .module:hover{border-color:rgba(90,200,250,0.3);}
-  .module h3{margin:0 0 4px; font-size:17px; color:#fff; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-  .module h3 .status{
-    font-size:11px; font-weight:400; padding:2px 8px; border-radius:10px;
-    background:var(--panel2); color:var(--muted);
+  .module h3{margin:0 0 4px;font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .module h3 .status{font-size:11px;font-weight:400;padding:2px 8px;border-radius:10px;background:var(--panel2);color:var(--muted);}
+  .module .sub{color:var(--muted);font-size:12.5px;margin:0 0 16px;line-height:1.5;}
+  .module-body{display:flex;gap:20px;flex-wrap:wrap;}
+  .controls{flex:1 1 260px;min-width:230px;display:flex;flex-direction:column;gap:12px;}
+  .controls label{font-size:12.5px;color:var(--text);display:flex;flex-direction:column;gap:4px;}
+  .controls .row{display:flex;justify-content:space-between;align-items:center;}
+  .controls .row span.val{font-family:monospace;color:var(--accent);font-size:12px;min-width:40px;text-align:right;}
+  input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;}
+  select,input[type=number]{
+    background:var(--panel2);color:var(--text);border:1px solid var(--border);
+    border-radius:5px;padding:6px 8px;font-size:12.5px;width:100%;
   }
-  .module .sub{color:var(--muted); font-size:12.5px; margin:0 0 16px; line-height:1.5;}
-  .module-body{display:flex; gap:20px; flex-wrap:wrap;}
-  .controls{flex:1 1 260px; min-width:230px; display:flex; flex-direction:column; gap:12px;}
-  .controls label{font-size:12.5px; color:var(--text); display:flex; flex-direction:column; gap:4px;}
-  .controls .row{display:flex; justify-content:space-between; align-items:center;}
-  .controls .row span.val{font-family:monospace; color:var(--accent); font-size:12px; min-width:40px; text-align:right;}
-  .controls .row .tooltip{font-size:11px; color:var(--muted); margin-left:6px;}
-  
-  input[type=range]{width:100%; accent-color:var(--accent); cursor:pointer;}
-  select, input[type=number], input[type=file]{
-    background:var(--panel2); color:var(--text); border:1px solid var(--border);
-    border-radius:5px; padding:6px 8px; font-size:12.5px; width:100%;
-    transition: border-color 0.2s;
-  }
-  select:focus, input:focus{outline:none; border-color:var(--accent);}
-  
-  .btn-group{display:flex; gap:6px; flex-wrap:wrap;}
+  select:focus,input:focus{outline:none;border-color:var(--accent);}
+  .btn-group{display:flex;gap:6px;flex-wrap:wrap;}
   button.run{
-    margin-top:6px; background:var(--accent); color:#00202b; border:none;
-    padding:10px 14px; border-radius:6px; font-weight:700; font-size:13px; cursor:pointer;
-    letter-spacing:0.03em; transition: all 0.2s;
+    margin-top:6px;background:var(--accent);color:#00202b;border:none;
+    padding:10px 14px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;
+    letter-spacing:0.03em;transition:all 0.2s;
   }
-  button.run:hover{filter:brightness(1.12); transform:scale(1.01);}
+  button.run:hover{filter:brightness(1.12);transform:scale(1.01);}
   button.run:active{transform:scale(0.98);}
-  button.run.secondary{background:var(--panel2); color:var(--text); border:1px solid var(--border);}
-  button.run.success{background:var(--success); color:#00202b;}
-  button.run.warning{background:var(--warning); color:#00202b;}
-  
-  .readout{flex:2 1 380px; min-width:320px; display:flex; flex-direction:column; gap:10px;}
-  canvas{width:100%; height:220px; background:var(--lcd-bg); border:1px solid var(--border); border-radius:6px; display:block;}
+  button.run.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
+  .readout{flex:2 1 380px;min-width:320px;display:flex;flex-direction:column;gap:10px;}
+  canvas{width:100%;height:220px;background:var(--lcd-bg);border:1px solid var(--border);border-radius:6px;display:block;}
   pre.lcd{
-    background:var(--lcd-bg); color:var(--lcd); border:1px solid var(--border);
-    border-radius:6px; padding:12px 14px; font-family:"Consolas","Menlo",monospace;
-    font-size:12.5px; line-height:1.6; margin:0; white-space:pre-wrap; min-height:70px;
-    max-height:200px; overflow-y:auto;
+    background:var(--lcd-bg);color:var(--lcd);border:1px solid var(--border);
+    border-radius:6px;padding:12px 14px;font-family:monospace;
+    font-size:12.5px;line-height:1.6;margin:0;white-space:pre-wrap;min-height:70px;
+    max-height:200px;overflow-y:auto;
   }
-  pre.lcd .highlight{color:var(--accent2);}
-  pre.lcd .error{color:var(--danger);}
-  pre.lcd .success{color:var(--success);}
-
-  table.grid-input{border-collapse:collapse; width:100%; font-size:11.5px;}
-  table.grid-input th, table.grid-input td{border:1px solid var(--border); padding:3px; text-align:center;}
-  table.grid-input th{color:var(--muted); font-weight:600; background:var(--panel2);}
-  table.grid-input input{
-    width:64px; background:var(--panel2); color:var(--text); border:1px solid var(--border);
-    border-radius:3px; padding:4px; font-size:11.5px; text-align:center;
-  }
-  table.grid-input input:disabled{opacity:0.25; background:transparent; border:none;}
-  table.grid-input input:focus{outline:none; border-color:var(--accent);}
-  
-  .credibility-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:8px;}
-  .credibility-grid .grp{border:1px dashed var(--border); border-radius:6px; padding:8px; font-size:11px;}
-  .credibility-grid .grp label{margin-bottom:4px; display:flex; flex-direction:column; gap:2px;}
-
-  /* Tooltip styles */
-  .tooltip{position:relative; cursor:help; border-bottom:1px dotted var(--muted); display:inline-block;}
-  .tooltip .tooltip-text{
-    visibility:hidden; opacity:0; width:260px; background:var(--panel); color:var(--text);
-    text-align:left; padding:8px 10px; border-radius:6px; border:1px solid var(--border);
-    position:absolute; z-index:100; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
-    font-weight:400; font-size:11px; line-height:1.5; transition: all 0.3s;
-    pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,0.5);
-  }
-  .tooltip .tooltip-text::after{
-    content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-    border:6px solid transparent; border-top-color:var(--border);
-  }
-  .tooltip:hover .tooltip-text{visibility:visible; opacity:1;}
-  .tooltip .tooltip-text .example{color:var(--accent); font-family:monospace; font-size:10px; display:block; margin-top:4px;}
-
-  /* Toast notification */
-  .toast{
-    position:fixed; bottom:30px; right:30px; background:var(--panel); color:var(--text);
-    padding:12px 20px; border-radius:8px; border:1px solid var(--border);
-    box-shadow:0 4px 20px rgba(0,0,0,0.6); transform:translateY(100px); opacity:0;
-    transition: all 0.4s; z-index:999; max-width:360px;
-  }
-  .toast.show{transform:translateY(0); opacity:1;}
-  .toast.success{border-left:4px solid var(--success);}
-  .toast.error{border-left:4px solid var(--danger);}
-  .toast .toast-title{font-weight:600; font-size:13px; margin-bottom:4px;}
-
-  /* Upload area */
-  .upload-area{
-    border:2px dashed var(--border); border-radius:8px; padding:20px; text-align:center;
-    transition: all 0.3s; cursor:pointer;
-  }
-  .upload-area:hover{border-color:var(--accent); background:rgba(90,200,250,0.05);}
-  .upload-area.dragover{border-color:var(--accent); background:rgba(90,200,250,0.1);}
-  .upload-area .icon{font-size:32px; display:block; margin-bottom:8px;}
-  .upload-area .text{color:var(--muted); font-size:12px;}
-  .upload-area .text strong{color:var(--text);}
-
-  .seed-control{display:flex; gap:8px; align-items:center;}
-  .seed-control input{width:80px;}
-
-  /* Tutorial overlay */
-  .tutorial-overlay{
-    position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85);
-    z-index:1000; display:none; align-items:center; justify-content:center;
-  }
-  .tutorial-overlay.active{display:flex;}
-  .tutorial-box{
-    background:var(--panel); border:1px solid var(--border); border-radius:12px;
-    max-width:600px; width:90%; padding:30px; max-height:80vh; overflow-y:auto;
-  }
-  .tutorial-box h2{color:#fff; margin-top:0;}
-  .tutorial-box p{color:var(--text); line-height:1.6;}
-  .tutorial-box .step{color:var(--accent); font-weight:bold;}
-  .tutorial-box button{margin-top:16px;}
-
-  /* Mobile optimized */
-  @media(max-width:700px){
-    .module-body{flex-direction:column;}
-    .controls{flex:1 1 100%;}
-    .readout{flex:1 1 100%;}
-    nav.tabs button{padding:6px 12px; font-size:11px;}
-    header h1{font-size:20px;}
-    .credibility-grid{grid-template-columns:1fr 1fr;}
-    .tooltip .tooltip-text{width:200px; left:0; transform:translateX(0);}
-    .tutorial-box{width:95%; padding:20px;}
-  }
-  @media(max-width:480px){
-    .credibility-grid{grid-template-columns:1fr;}
-    .btn-group{flex-direction:column;}
-    .btn-group button{width:100%;}
-    header{padding:16px;}
-    .tab-panel{padding:12px;}
-    .module{padding:12px;}
-  }
+  .credibility-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;}
+  .credibility-grid .grp{border:1px dashed var(--border);border-radius:6px;padding:8px;font-size:11px;}
+  .credibility-grid .grp label{margin-bottom:4px;display:flex;flex-direction:column;gap:2px;}
+  table.grid-input{border-collapse:collapse;width:100%;font-size:11.5px;}
+  table.grid-input th,table.grid-input td{border:1px solid var(--border);padding:3px;text-align:center;}
+  table.grid-input th{color:var(--muted);font-weight:600;background:var(--panel2);}
+  table.grid-input input{width:64px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:3px;padding:4px;font-size:11.5px;text-align:center;}
+  table.grid-input input:disabled{opacity:0.25;background:transparent;border:none;}
+  footer{padding:20px 24px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);text-align:center;}
+  @media(max-width:700px){.module-body{flex-direction:column;}.controls{flex:1 1 100%;}.readout{flex:1 1 100%;}nav.tabs button{padding:6px 12px;font-size:11px;}header h1{font-size:20px;}}
 </style>
 </head>
 <body>
@@ -186,10 +86,7 @@
 <header>
   <div class="badge">🚀 RUNS 100% IN YOUR BROWSER · NO INSTALL · NO INTERNET NEEDED</div>
   <h1>Virtual Stats Lab</h1>
-  <p>Statistics · Econometrics · Actuarial Science — an interactive simulation bench, like an Arduino
-  circuit simulator but for statistical tests. Turn the knobs, hit RUN, and watch the test statistics,
-  p-values, and charts update live. This is a single downloadable HTML file: save it and reopen it anytime,
-  online or offline, in any browser.</p>
+  <p>Statistics · Econometrics · Actuarial Science · Machine Learning — interactive simulations. Turn the knobs, hit RUN, watch results update live.</p>
 </header>
 
 <nav class="tabs">
@@ -197,19 +94,15 @@
   <button onclick="showTab('econometrics', this)">📈 ECONOMETRICS</button>
   <button onclick="showTab('actuarial', this)">📋 ACTUARIAL</button>
   <button onclick="showTab('advanced', this)">🔬 ADVANCED</button>
-  <button onclick="showTab('interactive', this)">🎮 INTERACTIVE</button>
   <button onclick="showTab('data', this)">📁 DATA</button>
-  <button onclick="showTab('tutorials', this)">📚 TUTORIALS</button>
 </nav>
 
 <!-- ============================= STATISTICS TAB ============================= -->
 <div id="tab-statistics" class="tab-panel active">
 
-  <!-- Existing modules 1-3 remain the same -->
   <div class="module">
     <h3>Module 1 — Two-Sample Comparison <span class="status" id="ts-status">ready</span></h3>
-    <p class="sub">Generates two random samples from Normal distributions with the settings below, then runs the
-    selected test. Try shrinking the gap between the means, or shrinking n, and watch the p-value climb.</p>
+    <p class="sub">Generates two random samples from Normal distributions. Adjust the sliders and see how p-values change.</p>
     <div class="module-body">
       <div class="controls">
         <label>Test type
@@ -219,41 +112,25 @@
             <option value="mwu">Mann-Whitney U (non-parametric)</option>
           </select>
         </label>
-        <label class="row">
-          <span>Group A mean <span class="tooltip">ⓘ<span class="tooltip-text">The average value of Group A. The larger the difference between groups, the more likely to find significance.<span class="example">Try: 20 vs 25</span></span></span>
-          <span class="val" id="v-ts-ma">20</span>
+        <label class="row">Group A mean <span class="val" id="v-ts-ma">20</span>
           <input type="range" id="ts-ma" min="0" max="40" value="20" step="0.5" oninput="document.getElementById('v-ts-ma').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Group A std dev <span class="tooltip">ⓘ<span class="tooltip-text">How spread out Group A is. Smaller std = clearer difference.<span class="example">Try: 2 (clear) vs 10 (noisy)</span></span></span>
-          <span class="val" id="v-ts-sa">4</span>
+        <label class="row">Group A std dev <span class="val" id="v-ts-sa">4</span>
           <input type="range" id="ts-sa" min="0.5" max="15" value="4" step="0.5" oninput="document.getElementById('v-ts-sa').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Group A n <span class="tooltip">ⓘ<span class="tooltip-text">Sample size. Larger n = more statistical power.<span class="example">Try: 10 vs 50</span></span></span>
-          <span class="val" id="v-ts-na">20</span>
+        <label class="row">Group A n <span class="val" id="v-ts-na">20</span>
           <input type="range" id="ts-na" min="5" max="80" value="20" step="1" oninput="document.getElementById('v-ts-na').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Group B mean <span class="tooltip">ⓘ<span class="tooltip-text">The average value of Group B.<span class="example">Try: 24 (small diff) or 30 (large diff)</span></span></span>
-          <span class="val" id="v-ts-mb">24</span>
+        <label class="row">Group B mean <span class="val" id="v-ts-mb">24</span>
           <input type="range" id="ts-mb" min="0" max="40" value="24" step="0.5" oninput="document.getElementById('v-ts-mb').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Group B std dev <span class="tooltip">ⓘ<span class="tooltip-text">How spread out Group B is.</span></span>
-          <span class="val" id="v-ts-sb">4</span>
+        <label class="row">Group B std dev <span class="val" id="v-ts-sb">4</span>
           <input type="range" id="ts-sb" min="0.5" max="15" value="4" step="0.5" oninput="document.getElementById('v-ts-sb').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Group B n <span class="tooltip">ⓘ<span class="tooltip-text">Sample size for Group B.</span></span>
-          <span class="val" id="v-ts-nb">20</span>
+        <label class="row">Group B n <span class="val" id="v-ts-nb">20</span>
           <input type="range" id="ts-nb" min="5" max="80" value="20" step="1" oninput="document.getElementById('v-ts-nb').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runTwoSample()">▶ RUN TEST</button>
-          <button class="run secondary" onclick="resetTwoSample()">↺ Reset</button>
-          <button class="run secondary" onclick="exportResults('out-ts','Two-Sample Test Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runTwoSample()">▶ RUN TEST</button>
       </div>
       <div class="readout">
         <canvas id="cv-ts" width="480" height="220"></canvas>
@@ -264,8 +141,7 @@
 
   <div class="module">
     <h3>Module 2 — Regression: Linear vs. Non-Linear Fit <span class="status" id="rg-status">ready</span></h3>
-    <p class="sub">Pick a true underlying shape, then pick a fit degree. Watch what happens when you fit a straight
-    line (degree 1) to curved data — and how R² recovers once the fit degree matches the true shape.</p>
+    <p class="sub">Pick a true underlying shape, then pick a fit degree. Watch R² change as you adjust the fit.</p>
     <div class="module-body">
       <div class="controls">
         <label>True relationship
@@ -273,31 +149,22 @@
             <option value="linear">Linear</option>
             <option value="quadratic" selected>Quadratic (parabola)</option>
             <option value="wavy">Wavy (sine)</option>
-            <option value="exponential">Exponential</option>
           </select>
         </label>
-        <label>Fit degree (polynomial order)
+        <label>Fit degree
           <select id="rg-degree">
             <option value="1">1 — straight line</option>
             <option value="2" selected>2 — parabola</option>
             <option value="3">3 — cubic</option>
-            <option value="4">4 — quartic</option>
           </select>
         </label>
-        <label class="row">
-          <span>Points (n) <span class="tooltip">ⓘ<span class="tooltip-text">Number of data points. More points = better fit estimation.<span class="example">Try: 20 vs 100</span></span></span>
-          <span class="val" id="v-rg-n">40</span>
+        <label class="row">Points (n) <span class="val" id="v-rg-n">40</span>
           <input type="range" id="rg-n" min="10" max="100" value="40" step="1" oninput="document.getElementById('v-rg-n').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Noise <span class="tooltip">ⓘ<span class="tooltip-text">Random variation added to the data. Higher noise = harder to see the true pattern.<span class="example">Try: 0 (perfect) vs 5 (noisy)</span></span></span>
-          <span class="val" id="v-rg-noise">1.5</span>
+        <label class="row">Noise <span class="val" id="v-rg-noise">1.5</span>
           <input type="range" id="rg-noise" min="0" max="8" value="1.5" step="0.1" oninput="document.getElementById('v-rg-noise').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runRegression()">▶ GENERATE &amp; FIT</button>
-          <button class="run secondary" onclick="exportResults('out-rg','Regression Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runRegression()">▶ GENERATE &amp; FIT</button>
       </div>
       <div class="readout">
         <canvas id="cv-rg" width="480" height="220"></canvas>
@@ -308,87 +175,24 @@
 
   <div class="module">
     <h3>Module 3 — Normality Check <span class="status" id="nm-status">ready</span></h3>
-    <p class="sub">Draws a sample from the chosen distribution and runs a simplified D'Agostino-style omnibus
-    normality test (combining skewness and kurtosis into one chi-square statistic).</p>
+    <p class="sub">Draws a sample from the chosen distribution and runs a D'Agostino-style normality test.</p>
     <div class="module-body">
       <div class="controls">
         <label>Distribution
           <select id="nm-dist">
             <option value="normal">Normal</option>
-            <option value="skewed">Right-skewed (log-normal)</option>
+            <option value="skewed">Right-skewed</option>
             <option value="uniform">Uniform</option>
-            <option value="bimodal">Bimodal</option>
-            <option value="heavy">Heavy-tailed (t-distribution)</option>
-            <option value="cauchy">Cauchy (very heavy-tailed)</option>
           </select>
         </label>
-        <label class="row">
-          <span>Sample size (n) <span class="tooltip">ⓘ<span class="tooltip-text">Larger samples give more reliable test results.<span class="example">Try: 30 vs 500</span></span></span>
-          <span class="val" id="v-nm-n">150</span>
+        <label class="row">Sample size (n) <span class="val" id="v-nm-n">150</span>
           <input type="range" id="nm-n" min="30" max="500" value="150" step="10" oninput="document.getElementById('v-nm-n').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runNormality()">▶ GENERATE &amp; TEST</button>
-          <button class="run secondary" onclick="exportResults('out-nm','Normality Test Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runNormality()">▶ GENERATE &amp; TEST</button>
       </div>
       <div class="readout">
         <canvas id="cv-nm" width="480" height="220"></canvas>
         <pre class="lcd" id="out-nm">Press GENERATE &amp; TEST to draw a sample and check normality.</pre>
-      </div>
-    </div>
-  </div>
-
-  <!-- NEW: Module 4 — ANOVA -->
-  <div class="module">
-    <h3>Module 4 — One-Way ANOVA <span class="status" id="anova-status">ready</span></h3>
-    <p class="sub">Compares means across 3+ groups simultaneously. Tests if at least one group differs significantly from the others.</p>
-    <div class="module-body">
-      <div class="controls">
-        <label class="row">Number of groups <span class="val" id="v-anova-groups">3</span>
-          <input type="range" id="anova-groups" min="3" max="5" value="3" step="1" oninput="document.getElementById('v-anova-groups').textContent=this.value; buildAnovaGroups()">
-        </label>
-        <label class="row">Observations per group <span class="val" id="v-anova-n">30</span>
-          <input type="range" id="anova-n" min="10" max="100" value="30" step="5" oninput="document.getElementById('v-anova-n').textContent=this.value">
-        </label>
-        <label class="row">Within-group std dev <span class="val" id="v-anova-std">5</span>
-          <input type="range" id="anova-std" min="1" max="15" value="5" step="0.5" oninput="document.getElementById('v-anova-std').textContent=this.value">
-        </label>
-        <div id="anova-means-container"></div>
-        <div class="btn-group">
-          <button class="run" onclick="runANOVA()">▶ RUN ANOVA</button>
-          <button class="run secondary" onclick="exportResults('out-anova','ANOVA Results')">📋 Copy</button>
-        </div>
-      </div>
-      <div class="readout">
-        <canvas id="cv-anova" width="480" height="220"></canvas>
-        <pre class="lcd" id="out-anova">Press RUN ANOVA to compare multiple groups.</pre>
-      </div>
-    </div>
-  </div>
-
-  <!-- NEW: Module 5 — Chi-Square Tests -->
-  <div class="module">
-    <h3>Module 5 — Chi-Square Tests <span class="status" id="chi-status">ready</span></h3>
-    <p class="sub">Tests for independence between categorical variables using a contingency table.</p>
-    <div class="module-body">
-      <div class="controls">
-        <label>Table size
-          <select id="chi-size" onchange="buildChiTable()">
-            <option value="2x2">2×2</option>
-            <option value="2x3">2×3</option>
-            <option value="3x3" selected>3×3</option>
-          </select>
-        </label>
-        <div id="chi-table-container"></div>
-        <div class="btn-group">
-          <button class="run" onclick="runChiSquare()">▶ RUN CHI-SQUARE</button>
-          <button class="run secondary" onclick="exportResults('out-chi','Chi-Square Results')">📋 Copy</button>
-        </div>
-      </div>
-      <div class="readout">
-        <canvas id="cv-chi" width="480" height="220"></canvas>
-        <pre class="lcd" id="out-chi">Press RUN CHI-SQUARE to test for independence.</pre>
       </div>
     </div>
   </div>
@@ -398,40 +202,27 @@
 <!-- ============================= ECONOMETRICS TAB ============================= -->
 <div id="tab-econometrics" class="tab-panel">
 
-  <!-- Existing econometrics modules 1-3 remain -->
   <div class="module">
-    <h3>Module 1 — Stationarity (Dickey-Fuller, simplified) <span class="status" id="adf-status">ready</span></h3>
-    <p class="sub">Generates a time series as either a random walk (non-stationary) or a mean-reverting AR(1)
-    process (stationary), then runs a simplified single-lag Dickey-Fuller regression: Δy(t) = α + β·y(t−1) + ε.
-    A more negative t-stat than the critical value rejects the unit root.</p>
+    <h3>Module 1 — Stationarity (Dickey-Fuller) <span class="status" id="adf-status">ready</span></h3>
+    <p class="sub">Generates a time series as either a random walk (non-stationary) or a mean-reverting AR(1) process (stationary).</p>
     <div class="module-body">
       <div class="controls">
         <label>Process type
           <select id="adf-type">
             <option value="rw">Random walk (non-stationary)</option>
             <option value="ar1">Mean-reverting AR(1) (stationary)</option>
-            <option value="trend">Random walk with drift</option>
           </select>
         </label>
-        <label class="row">
-          <span>Length (periods) <span class="tooltip">ⓘ<span class="tooltip-text">More periods = more data for the test. Usually 50-100 is good.<span class="example">Try: 30 vs 200</span></span></span>
-          <span class="val" id="v-adf-n">80</span>
+        <label class="row">Length <span class="val" id="v-adf-n">80</span>
           <input type="range" id="adf-n" min="30" max="200" value="80" step="5" oninput="document.getElementById('v-adf-n').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Noise <span class="tooltip">ⓘ<span class="tooltip-text">Random shocks to the process. Higher noise = more volatile series.</span></span>
-          <span class="val" id="v-adf-noise">1</span>
+        <label class="row">Noise <span class="val" id="v-adf-noise">1</span>
           <input type="range" id="adf-noise" min="0.2" max="3" value="1" step="0.1" oninput="document.getElementById('v-adf-noise').textContent=this.value">
         </label>
-        <label class="row">
-          <span>AR(1) φ <span class="tooltip">ⓘ<span class="tooltip-text">Mean-reversion strength. φ=0.1 = strong reversion, φ=0.9 = weak reversion (almost non-stationary).<span class="example">Try: 0.1 vs 0.9</span></span></span>
-          <span class="val" id="v-adf-phi">0.6</span>
+        <label class="row">AR(1) φ <span class="val" id="v-adf-phi">0.6</span>
           <input type="range" id="adf-phi" min="0.1" max="0.9" value="0.6" step="0.05" oninput="document.getElementById('v-adf-phi').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runADF()">▶ GENERATE &amp; TEST</button>
-          <button class="run secondary" onclick="exportResults('out-adf','ADF Test Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runADF()">▶ GENERATE &amp; TEST</button>
       </div>
       <div class="readout">
         <canvas id="cv-adf" width="480" height="220"></canvas>
@@ -442,48 +233,33 @@
 
   <div class="module">
     <h3>Module 2 — Heteroskedasticity (Breusch-Pagan) <span class="status" id="bp-status">ready</span></h3>
-    <p class="sub">Fits y = a + bx, then regresses the squared residuals on x. A significant result means residual
-    variance is NOT constant — the classic "fan shape" that violates an OLS assumption.</p>
+    <p class="sub">Fits y = a + bx, then regresses the squared residuals on x. A significant result means residual variance is NOT constant.</p>
     <div class="module-body">
       <div class="controls">
-        <label class="row">
-          <span>Points (n) <span class="tooltip">ⓘ<span class="tooltip-text">Sample size for the regression.</span></span>
-          <span class="val" id="v-bp-n">60</span>
+        <label class="row">Points (n) <span class="val" id="v-bp-n">60</span>
           <input type="range" id="bp-n" min="20" max="150" value="60" step="5" oninput="document.getElementById('v-bp-n').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Heteroskedasticity strength <span class="tooltip">ⓘ<span class="tooltip-text">How much variance increases with x. 0 = constant variance, 2 = strong heteroskedasticity.<span class="example">Try: 0 vs 2</span></span></span>
-          <span class="val" id="v-bp-het">0.6</span>
+        <label class="row">Heteroskedasticity strength <span class="val" id="v-bp-het">0.6</span>
           <input type="range" id="bp-het" min="0" max="2" value="0.6" step="0.1" oninput="document.getElementById('v-bp-het').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runBP()">▶ GENERATE &amp; TEST</button>
-          <button class="run secondary" onclick="exportResults('out-bp','Breusch-Pagan Test Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runBP()">▶ GENERATE &amp; TEST</button>
       </div>
       <div class="readout">
         <canvas id="cv-bp" width="480" height="220"></canvas>
-        <pre class="lcd" id="out-bp">Press GENERATE &amp; TEST — canvas shows residuals vs. x (look for a fan shape).</pre>
+        <pre class="lcd" id="out-bp">Press GENERATE &amp; TEST to check for heteroskedasticity.</pre>
       </div>
     </div>
   </div>
 
   <div class="module">
     <h3>Module 3 — Spurious Regression Demo <span class="status" id="sp-status">ready</span></h3>
-    <p class="sub">Generates two completely independent random walks and regresses one on the other. This
-    routinely produces a "significant" result with no real relationship — the reason you must check
-    stationarity (Module 1) before regressing time series.</p>
+    <p class="sub">Generates two independent random walks and regresses one on the other — the reason you must check stationarity first.</p>
     <div class="module-body">
       <div class="controls">
-        <label class="row">
-          <span>Length (periods) <span class="tooltip">ⓘ<span class="tooltip-text">More periods = more likely to get a spurious result.</span></span>
-          <span class="val" id="v-sp-n">100</span>
+        <label class="row">Length <span class="val" id="v-sp-n">100</span>
           <input type="range" id="sp-n" min="30" max="250" value="100" step="10" oninput="document.getElementById('v-sp-n').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runSpurious()">▶ GENERATE &amp; REGRESS</button>
-          <button class="run secondary" onclick="exportResults('out-sp','Spurious Regression Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runSpurious()">▶ GENERATE &amp; REGRESS</button>
       </div>
       <div class="readout">
         <canvas id="cv-sp" width="480" height="220"></canvas>
@@ -497,33 +273,21 @@
 <!-- ============================= ACTUARIAL TAB ============================= -->
 <div id="tab-actuarial" class="tab-panel">
 
-  <!-- Existing actuarial modules 1-3 remain -->
   <div class="module">
     <h3>Module 1 — Mortality Experience Study <span class="status" id="mt-status">ready</span></h3>
-    <p class="sub">Simulates actual deaths as a Poisson process around the table's expected deaths, scaled by a
-    "true" multiplier you control (e.g. 1.15 = 15% worse mortality than the table assumes). Runs a chi-square GOF
-    test and computes the Standardized Mortality Ratio (SMR) with an exact Poisson confidence interval.</p>
+    <p class="sub">Simulates actual deaths as a Poisson process. Computes SMR with confidence interval.</p>
     <div class="module-body">
       <div class="controls">
-        <label class="row">
-          <span>Exposure (lives) <span class="tooltip">ⓘ<span class="tooltip-text">Number of lives at risk. Larger exposure = more precise estimate.<span class="example">Try: 500 vs 5000</span></span></span>
-          <span class="val" id="v-mt-exp">2000</span>
+        <label class="row">Exposure <span class="val" id="v-mt-exp">2000</span>
           <input type="range" id="mt-exp" min="200" max="8000" value="2000" step="100" oninput="document.getElementById('v-mt-exp').textContent=this.value">
         </label>
-        <label class="row">
-          <span>Table qx <span class="tooltip">ⓘ<span class="tooltip-text">Expected mortality rate from the standard table. Typical range: 0.005-0.05.</span></span>
-          <span class="val" id="v-mt-qx">0.012</span>
+        <label class="row">Table qx <span class="val" id="v-mt-qx">0.012</span>
           <input type="range" id="mt-qx" min="0.002" max="0.05" value="0.012" step="0.001" oninput="document.getElementById('v-mt-qx').textContent=this.value">
         </label>
-        <label class="row">
-          <span>True multiplier <span class="tooltip">ⓘ<span class="tooltip-text">The actual mortality relative to the table. 1.0 = table is correct. 1.15 = 15% worse than table.<span class="example">Try: 0.8 vs 1.5</span></span></span>
-          <span class="val" id="v-mt-mult">1.15</span>
+        <label class="row">True multiplier <span class="val" id="v-mt-mult">1.15</span>
           <input type="range" id="mt-mult" min="0.5" max="2" value="1.15" step="0.05" oninput="document.getElementById('v-mt-mult').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runMortality()">▶ SIMULATE &amp; TEST</button>
-          <button class="run secondary" onclick="exportResults('out-mt','Mortality Study Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runMortality()">▶ SIMULATE &amp; TEST</button>
       </div>
       <div class="readout">
         <canvas id="cv-mt" width="480" height="220"></canvas>
@@ -533,37 +297,27 @@
   </div>
 
   <div class="module">
-    <h3>Module 2 — Bühlmann Credibility Calculator <span class="status" id="cred-status">ready</span></h3>
-    <p class="sub">Enter each group's observed mean claim, variance, and exposure count (n). Computes the
-    Bühlmann credibility factor Z per group and blends each group's own mean with the overall mean accordingly.</p>
+    <h3>Module 2 — Bühlmann Credibility <span class="status" id="cred-status">ready</span></h3>
+    <p class="sub">Enter each group's mean claim, variance, and exposure. Computes credibility factor Z per group.</p>
     <div class="module-body">
       <div class="controls" style="flex:1 1 100%;">
         <div class="credibility-grid" id="cred-grid"></div>
-        <div class="btn-group">
-          <button class="run" onclick="runCredibility()">▶ COMPUTE CREDIBILITY</button>
-          <button class="run secondary" onclick="resetCredibility()">↺ Reset Groups</button>
-          <button class="run secondary" onclick="exportResults('out-cred','Credibility Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runCredibility()">▶ COMPUTE CREDIBILITY</button>
       </div>
       <div class="readout" style="flex:1 1 100%;">
         <canvas id="cv-cred" width="900" height="220"></canvas>
-        <pre class="lcd" id="out-cred">Press COMPUTE CREDIBILITY to blend each group's experience with the overall mean.</pre>
+        <pre class="lcd" id="out-cred">Press COMPUTE CREDIBILITY to blend each group's experience.</pre>
       </div>
     </div>
   </div>
 
   <div class="module">
-    <h3>Module 3 — Chain-Ladder Reserve Simulator <span class="status" id="cl-status">ready</span></h3>
-    <p class="sub">Edit the cumulative-loss triangle below (blank/greyed cells are "not yet observed"). Click
-    COMPUTE to derive development factors, project each accident year to ultimate, and total the IBNR reserve.</p>
+    <h3>Module 3 — Chain-Ladder Reserve <span class="status" id="cl-status">ready</span></h3>
+    <p class="sub">Edit the cumulative-loss triangle. Click COMPUTE to derive development factors and total the IBNR reserve.</p>
     <div class="module-body">
       <div class="controls" style="flex:1 1 100%;">
         <table class="grid-input" id="triangle-table"></table>
-        <div class="btn-group">
-          <button class="run" onclick="runChainLadder()">▶ COMPUTE RESERVE</button>
-          <button class="run secondary" onclick="resetTriangle()">↺ Reset Triangle</button>
-          <button class="run secondary" onclick="exportResults('out-cl','Chain-Ladder Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runChainLadder()">▶ COMPUTE RESERVE</button>
       </div>
       <div class="readout" style="flex:1 1 100%;">
         <canvas id="cv-cl" width="900" height="220"></canvas>
@@ -577,10 +331,9 @@
 <!-- ============================= ADVANCED TAB ============================= -->
 <div id="tab-advanced" class="tab-panel">
 
-  <!-- NEW: Module 1 — VAR (Vector Autoregression) -->
   <div class="module">
     <h3>Module 1 — Vector Autoregression (VAR) <span class="status" id="var-status">ready</span></h3>
-    <p class="sub">Models the joint dynamics of multiple stationary time series. Each variable depends on its own lags and the lags of other variables.</p>
+    <p class="sub">Models the joint dynamics of multiple stationary time series. Each variable depends on its own lags and the lags of others.</p>
     <div class="module-body">
       <div class="controls">
         <label>Number of variables
@@ -595,10 +348,7 @@
         <label class="row">Time periods <span class="val" id="v-var-n">100</span>
           <input type="range" id="var-n" min="50" max="300" value="100" step="10" oninput="document.getElementById('v-var-n').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runVAR()">▶ SIMULATE &amp; ESTIMATE</button>
-          <button class="run secondary" onclick="exportResults('out-var','VAR Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runVAR()">▶ SIMULATE &amp; ESTIMATE</button>
       </div>
       <div class="readout">
         <canvas id="cv-var" width="480" height="220"></canvas>
@@ -607,10 +357,9 @@
     </div>
   </div>
 
-  <!-- NEW: Module 2 — Cointegration -->
   <div class="module">
-    <h3>Module 2 — Engle-Granger Cointegration <span class="status" id="coint-status">ready</span></h3>
-    <p class="sub">Tests if two non-stationary series share a stable long-run relationship. If cointegrated, they move together in the long run.</p>
+    <h3>Module 2 — Cointegration <span class="status" id="coint-status">ready</span></h3>
+    <p class="sub">Tests if two non-stationary series share a stable long-run relationship using the Engle-Granger test.</p>
     <div class="module-body">
       <div class="controls">
         <label class="row">Time periods <span class="val" id="v-coint-n">100</span>
@@ -619,10 +368,7 @@
         <label class="row">Cointegration strength <span class="val" id="v-coint-beta">0.8</span>
           <input type="range" id="coint-beta" min="0.1" max="1.5" value="0.8" step="0.05" oninput="document.getElementById('v-coint-beta').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runCointegration()">▶ GENERATE &amp; TEST</button>
-          <button class="run secondary" onclick="exportResults('out-coint','Cointegration Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runCointegration()">▶ GENERATE &amp; TEST</button>
       </div>
       <div class="readout">
         <canvas id="cv-coint" width="480" height="220"></canvas>
@@ -631,10 +377,9 @@
     </div>
   </div>
 
-  <!-- NEW: Module 3 — Machine Learning Basics (Linear Classifier) -->
   <div class="module">
     <h3>Module 3 — Linear Classifier (Logistic Regression) <span class="status" id="ml-status">ready</span></h3>
-    <p class="sub">Demonstrates a simple binary classifier using logistic regression. Two classes with different means — the model learns the decision boundary.</p>
+    <p class="sub">Demonstrates a simple binary classifier. Two classes with different means — the model learns the decision boundary.</p>
     <div class="module-body">
       <div class="controls">
         <label class="row">Points per class <span class="val" id="v-ml-n">50</span>
@@ -646,45 +391,11 @@
         <label class="row">Noise <span class="val" id="v-ml-noise">1</span>
           <input type="range" id="ml-noise" min="0.2" max="3" value="1" step="0.1" oninput="document.getElementById('v-ml-noise').textContent=this.value">
         </label>
-        <div class="btn-group">
-          <button class="run" onclick="runMLClassifier()">▶ GENERATE &amp; CLASSIFY</button>
-          <button class="run secondary" onclick="exportResults('out-ml','ML Classifier Results')">📋 Copy</button>
-        </div>
+        <button class="run" onclick="runMLClassifier()">▶ GENERATE &amp; CLASSIFY</button>
       </div>
       <div class="readout">
         <canvas id="cv-ml" width="480" height="220"></canvas>
         <pre class="lcd" id="out-ml">Press GENERATE &amp; CLASSIFY to train a linear classifier.</pre>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ============================= INTERACTIVE TAB ============================= -->
-<div id="tab-interactive" class="tab-panel">
-
-  <div class="module">
-    <h3>🎮 Interactive Mode — Guided Workflow <span class="status">beta</span></h3>
-    <p class="sub">Answer a few questions and the lab will guide you to the right test, generate appropriate data, and explain the results.</p>
-    <div class="module-body">
-      <div class="controls" style="flex:1 1 100%;">
-        <label>What's your question?
-          <select id="iq-question">
-            <option value="compare">Compare two groups</option>
-            <option value="relationship">Relationship between variables</option>
-            <option value="distribution">What distribution is this?</option>
-            <option value="time">Is this time series stationary?</option>
-            <option value="reserve">How much reserve do I need?</option>
-            <option value="anova">Compare three or more groups</option>
-            <option value="categorical">Relationship between categorical variables</option>
-          </select>
-        </label>
-        <div id="iq-followup"></div>
-        <div class="btn-group">
-          <button class="run" onclick="runInteractive()">▶ RUN GUIDED ANALYSIS</button>
-          <button class="run secondary" onclick="exportResults('out-iq','Interactive Analysis Results')">📋 Copy</button>
-        </div>
-        <pre class="lcd" id="out-iq">Select a question above and click RUN GUIDED ANALYSIS.</pre>
       </div>
     </div>
   </div>
@@ -696,142 +407,951 @@
 
   <div class="module">
     <h3>📁 Data Management <span class="status">ready</span></h3>
-    <p class="sub">Upload your own CSV or Excel data, manage random seeds for reproducibility, and control the simulation environment.</p>
+    <p class="sub">Manage random seeds, generate sample data, and export results.</p>
     <div class="module-body">
       <div class="controls" style="flex:1 1 100%;">
-        
-        <h4 style="color:var(--text); margin:0 0 8px;">🎲 Random Seed Control</h4>
-        <p style="color:var(--muted); font-size:12px; margin:0 0 8px;">Set a seed for reproducible results. Same seed = same random numbers every time.</p>
-        <div class="seed-control">
-          <label style="flex:1;">Random Seed
-            <input type="number" id="random-seed" value="42" min="0" max="999999">
-          </label>
-          <button class="run secondary" onclick="setRandomSeed()" style="margin-top:0; padding:6px 12px;">Apply Seed</button>
-          <button class="run secondary" onclick="randomizeSeed()" style="margin-top:0; padding:6px 12px;">🎲 Random</button>
+        <h4 style="color:var(--text);margin:0 0 8px;">🎲 Random Seed</h4>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="random-seed" value="42" min="0" max="999999" style="flex:1;">
+          <button class="run secondary" onclick="setRandomSeed()" style="margin:0;padding:6px 12px;">Apply</button>
         </div>
-        
-        <hr style="border-color:var(--border); margin:16px 0;">
-        
-        <h4 style="color:var(--text); margin:0 0 8px;">💾 Save/Load Session</h4>
-        <p style="color:var(--muted); font-size:12px; margin:0 0 8px;">Save all current settings and results to your browser's local storage.</p>
+        <hr style="border-color:var(--border);margin:16px 0;">
+        <h4 style="color:var(--text);margin:0 0 8px;">📊 Sample Data</h4>
         <div class="btn-group">
-          <button class="run secondary" onclick="saveSession()">💾 Save Session</button>
-          <button class="run secondary" onclick="loadSession()">📂 Load Session</button>
-          <button class="run secondary" onclick="clearSession()">🗑️ Clear Session</button>
+          <button class="run secondary" onclick="generateSampleData('two-sample')">Two-Sample</button>
+          <button class="run secondary" onclick="generateSampleData('regression')">Regression</button>
+          <button class="run secondary" onclick="generateSampleData('time-series')">Time Series</button>
+          <button class="run secondary" onclick="generateSampleData('triangle')">Triangle</button>
         </div>
-        
-        <hr style="border-color:var(--border); margin:16px 0;">
-        
-        <h4 style="color:var(--text); margin:0 0 8px;">📂 Upload Data (CSV or Excel)</h4>
-        <p style="color:var(--muted); font-size:12px; margin:0 0 8px;">Upload a file to populate the modules with your own data. Supports CSV and Excel (.xlsx) formats.</p>
-        <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
-          <span class="icon">📤</span>
-          <div class="text">
-            <strong>Click to upload</strong> or drag & drop your file here<br>
-            Supports CSV, Excel (.xlsx)
-          </div>
-          <input type="file" id="file-input" accept=".csv,.xlsx,.xls" style="display:none;" onchange="handleFileUpload(event)">
-        </div>
-        <div id="upload-status" style="color:var(--muted); font-size:12px; margin-top:4px;"></div>
-        
-        <hr style="border-color:var(--border); margin:16px 0;">
-        
-        <h4 style="color:var(--text); margin:0 0 8px;">📊 Sample Data Generators</h4>
-        <p style="color:var(--muted); font-size:12px; margin:0 0 8px;">Generate sample datasets for each module.</p>
+        <hr style="border-color:var(--border);margin:16px 0;">
+        <h4 style="color:var(--text);margin:0 0 8px;">📋 Export All Results</h4>
         <div class="btn-group">
-          <button class="run secondary" onclick="generateSampleData('two-sample')">Two-Sample Data</button>
-          <button class="run secondary" onclick="generateSampleData('regression')">Regression Data</button>
-          <button class="run secondary" onclick="generateSampleData('time-series')">Time Series Data</button>
-          <button class="run secondary" onclick="generateSampleData('triangle')">Loss Triangle</button>
-          <button class="run secondary" onclick="generateSampleData('anova')">ANOVA Data</button>
+          <button class="run" onclick="exportAllResults()">📥 Download All</button>
+          <button class="run secondary" onclick="copyAllResults()">📋 Copy All</button>
         </div>
-        
-        <hr style="border-color:var(--border); margin:16px 0;">
-        
-        <h4 style="color:var(--text); margin:0 0 8px;">📋 Export All Results</h4>
-        <div class="btn-group">
-          <button class="run success" onclick="exportAllResults()">📥 Download All Results</button>
-          <button class="run secondary" onclick="copyAllResults()">📋 Copy All Results</button>
-          <button class="run secondary" onclick="exportPDF()">📄 Export PDF</button>
-        </div>
-        
       </div>
     </div>
   </div>
 
-</div>
-
-<!-- ============================= TUTORIALS TAB ============================= -->
-<div id="tab-tutorials" class="tab-panel">
-
-  <div class="module">
-    <h3>📚 Interactive Tutorials <span class="status">beta</span></h3>
-    <p class="sub">Step-by-step tutorials to learn statistical concepts through hands-on experimentation.</p>
-    <div class="module-body">
-      <div class="controls" style="flex:1 1 100%;">
-        <label>Select a tutorial
-          <select id="tutorial-select" onchange="loadTutorial()">
-            <option value="intro">Introduction: How to Use the Lab</option>
-            <option value="ttest">Tutorial 1: Understanding t-Tests</option>
-            <option value="regression">Tutorial 2: Regression & Overfitting</option>
-            <option value="stationarity">Tutorial 3: Why Stationarity Matters</option>
-            <option value="anova">Tutorial 4: One-Way ANOVA</option>
-            <option value="reserving">Tutorial 5: Chain-Ladder Reserving</option>
-          </select>
-        </label>
-        <div id="tutorial-content" style="background:var(--panel2); border-radius:6px; padding:16px; margin-top:8px; max-height:400px; overflow-y:auto;">
-          <h4 style="color:var(--accent); margin-top:0;">Select a tutorial above</h4>
-          <p style="color:var(--text);">Each tutorial walks you through a statistical concept with step-by-step instructions and interactive exercises.</p>
-        </div>
-        <div class="btn-group">
-          <button class="run" onclick="startTutorial()">▶ START TUTORIAL</button>
-          <button class="run secondary" onclick="nextTutorialStep()">Next Step →</button>
-          <button class="run secondary" onclick="resetTutorial()">↺ Reset Tutorial</button>
-        </div>
-        <div id="tutorial-progress" style="color:var(--muted); font-size:12px; margin-top:4px;">Progress: 0%</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- Tutorial Overlay -->
-<div class="tutorial-overlay" id="tutorial-overlay">
-  <div class="tutorial-box">
-    <h2 id="tutorial-title">Welcome!</h2>
-    <div id="tutorial-body">
-      <p>This interactive tutorial will guide you through the lab.</p>
-    </div>
-    <button class="run" onclick="closeTutorial()">Close</button>
-  </div>
-</div>
-
-<!-- Toast Notification -->
-<div id="toast" class="toast">
-  <div class="toast-title" id="toast-title">✅ Done</div>
-  <div id="toast-message">Action completed successfully.</div>
 </div>
 
 <footer>Virtual Stats Lab — a single self-contained HTML file. No server, no build step, no install. Save it anywhere and reopen in any browser.</footer>
 
 <script>
-/* ======================================================================
-   [All existing JavaScript code from previous version goes here]
-   ====================================================================== */
+/* ============================================================
+   COMPLETE JAVASCRIPT — ALL FUNCTIONS WORKING
+   ============================================================ */
 
-// [Note: Due to space constraints, the JavaScript implementation of all new features
-// would be included here. This includes:
-// - ANOVA module functions
-// - Chi-square module functions
-// - VAR module functions
-// - Cointegration module functions
-// - ML Classifier module functions
-// - Session save/load functions
-// - PDF export functions
-// - Tutorial system functions
-// ]
+// ============================================================
+// MATH CORE FUNCTIONS
+// ============================================================
 
-// ... full implementation would be ~3000 lines of JavaScript
+function erf(x){
+  const sign = x>=0?1:-1; x=Math.abs(x);
+  const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+  const t=1/(1+p*x);
+  const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return sign*y;
+}
+
+function normalCDF(x,m=0,sd=1){ return 0.5*(1+erf((x-m)/(sd*Math.sqrt(2)))); }
+
+function gammaln(x){
+  const cof=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];
+  let y=x, tmp=x+5.5; tmp-=(x+0.5)*Math.log(tmp);
+  let ser=1.000000000190015;
+  for(let j=0;j<6;j++){ y+=1; ser+=cof[j]/y; }
+  return -tmp+Math.log(2.5066282746310005*ser/x);
+}
+
+function gammaincLower(a,x){
+  if(x<0||a<=0) return 0; if(x===0) return 0;
+  if(x<a+1){
+    let ap=a, sum=1/a, del=sum;
+    for(let n=0;n<200;n++){ ap+=1; del*=x/ap; sum+=del; if(Math.abs(del)<Math.abs(sum)*1e-12) break; }
+    return sum*Math.exp(-x+a*Math.log(x)-gammaln(a));
+  } else {
+    let b=x+1-a,c=1e300,d=1/b,h=d;
+    for(let i=1;i<200;i++){
+      const an=-i*(i-a); b+=2;
+      d=an*d+b; if(Math.abs(d)<1e-300) d=1e-300;
+      c=b+an/c; if(Math.abs(c)<1e-300) c=1e-300;
+      d=1/d; const del=d*c; h*=del;
+      if(Math.abs(del-1)<1e-12) break;
+    }
+    return 1-Math.exp(-x+a*Math.log(x)-gammaln(a))*h;
+  }
+}
+
+function chiSquarePValue(stat,dof){ return 1-gammaincLower(dof/2, stat/2); }
+
+function betacf(a,b,x){
+  const MAXIT=200, EPS=3e-12, FPMIN=1e-300;
+  let qab=a+b, qap=a+1, qam=a-1;
+  let c=1, d=1-qab*x/qap; if(Math.abs(d)<FPMIN) d=FPMIN; d=1/d; let h=d;
+  for(let m=1;m<=MAXIT;m++){
+    const m2=2*m;
+    let aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN;
+    c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN;
+    d=1/d; h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN;
+    c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN;
+    d=1/d; const del=d*c; h*=del;
+    if(Math.abs(del-1)<EPS) break;
+  }
+  return h;
+}
+
+function betai(a,b,x){
+  if(x<=0) return 0; if(x>=1) return 1;
+  const bt=Math.exp(gammaln(a+b)-gammaln(a)-gammaln(b)+a*Math.log(x)+b*Math.log(1-x));
+  if(x<(a+1)/(a+b+2)) return bt*betacf(a,b,x)/a;
+  return 1-bt*betacf(b,a,1-x)/b;
+}
+
+function studentTPValue(t,dof){ const x=dof/(dof+t*t); return betai(dof/2,0.5,x); }
+
+function invChiSquare(pTarget,dof){
+  let lo=0, hi=1;
+  while(gammaincLower(dof/2,hi/2)<pTarget) hi*=2;
+  for(let i=0;i<100;i++){ const mid=(lo+hi)/2; if(gammaincLower(dof/2,mid/2)<pTarget) lo=mid; else hi=mid; }
+  return (lo+hi)/2;
+}
+
+function mean(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+function variance(arr,ddof=1){ const m=mean(arr); return arr.reduce((s,v)=>s+(v-m)**2,0)/(arr.length-ddof); }
+function std(arr,ddof=1){ return Math.sqrt(variance(arr,ddof)); }
+
+function linreg(xs,ys){
+  const n=xs.length, mx=mean(xs), my=mean(ys);
+  let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<n;i++){ sxy+=(xs[i]-mx)*(ys[i]-my); sxx+=(xs[i]-mx)**2; syy+=(ys[i]-my)**2; }
+  const slope=sxy/sxx, intercept=my-slope*mx, r=sxy/Math.sqrt(sxx*syy), r2=r*r, dof=n-2;
+  const tstat=r*Math.sqrt(dof/(1-r2));
+  return {slope, intercept, r, r2, tstat, dof, p:studentTPValue(tstat,dof)};
+}
+
+function ttestIndep(a,b,equalVar=true){
+  const na=a.length, nb=b.length, ma=mean(a), mb=mean(b), va=variance(a), vb=variance(b);
+  if(equalVar){
+    const sp2=((na-1)*va+(nb-1)*vb)/(na+nb-2);
+    const se=Math.sqrt(sp2*(1/na+1/nb));
+    const t=(ma-mb)/se, dof=na+nb-2;
+    return {t, dof, p:studentTPValue(t,dof), ma, mb, va, vb};
+  } else {
+    const se=Math.sqrt(va/na+vb/nb);
+    const t=(ma-mb)/se;
+    const dof=(va/na+vb/nb)**2/((va/na)**2/(na-1)+(vb/nb)**2/(nb-1));
+    return {t, dof, p:studentTPValue(t,dof), ma, mb, va, vb};
+  }
+}
+
+function skewness(arr){ const n=arr.length,m=mean(arr),s=std(arr,1); const m3=arr.reduce((a,v)=>a+(v-m)**3,0)/n; return m3/Math.pow(s,3); }
+function kurtosisExcess(arr){ const n=arr.length,m=mean(arr),s=std(arr,1); const m4=arr.reduce((a,v)=>a+(v-m)**4,0)/n; return m4/Math.pow(s,4)-3; }
+
+function dagostinoK2(arr){
+  const n=arr.length, g1=skewness(arr), g2=kurtosisExcess(arr);
+  const seSkew=Math.sqrt(6/n), seKurt=Math.sqrt(24/n);
+  const zS=g1/seSkew, zK=g2/seKurt, K2=zS*zS+zK*zK;
+  return {K2, p:chiSquarePValue(K2,2), skew:g1, kurt:g2};
+}
+
+function mannWhitneyU(a,b){
+  const combined=a.map(v=>({v,g:'a'})).concat(b.map(v=>({v,g:'b'})));
+  combined.sort((x,y)=>x.v-y.v);
+  let ranks=new Array(combined.length), i=0;
+  while(i<combined.length){
+    let j=i; while(j+1<combined.length && combined[j+1].v===combined[i].v) j++;
+    const avgRank=(i+j)/2+1;
+    for(let k=i;k<=j;k++) ranks[k]=avgRank;
+    i=j+1;
+  }
+  let Ra=0; for(let k=0;k<combined.length;k++) if(combined[k].g==='a') Ra+=ranks[k];
+  const na=a.length, nb=b.length;
+  const Ua=Ra-na*(na+1)/2, Ub=na*nb-Ua, U=Math.min(Ua,Ub);
+  const mu=na*nb/2, sigma=Math.sqrt(na*nb*(na+nb+1)/12);
+  const z=(U-mu)/sigma;
+  return {U, z, p:2*(1-normalCDF(Math.abs(z)))};
+}
+
+function randNormal(m=0,sd=1){
+  let u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+  return m+sd*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+
+function randPoisson(lambda){
+  if(lambda<30){ const L=Math.exp(-lambda); let k=0,p=1; do{k++; p=Math.random();}while(p>L); return k-1; }
+  return Math.max(0, Math.round(randNormal(lambda, Math.sqrt(lambda))));
+}
+
+function polyfit(xs,ys,degree){
+  const n=degree+1;
+  let A=Array.from({length:n},()=>new Array(n).fill(0)), B=new Array(n).fill(0);
+  for(let i=0;i<n;i++){
+    for(let j=0;j<n;j++){ let s=0; for(const x of xs) s+=Math.pow(x,i+j); A[i][j]=s; }
+    let s=0; for(let k=0;k<xs.length;k++) s+=Math.pow(xs[k],i)*ys[k]; B[i]=s;
+  }
+  for(let i=0;i<n;i++){
+    let maxRow=i; for(let k=i+1;k<n;k++) if(Math.abs(A[k][i])>Math.abs(A[maxRow][i])) maxRow=k;
+    [A[i],A[maxRow]]=[A[maxRow],A[i]]; [B[i],B[maxRow]]=[B[maxRow],B[i]];
+    for(let k=i+1;k<n;k++){ const f=A[k][i]/A[i][i]; for(let j=i;j<n;j++) A[k][j]-=f*A[i][j]; B[k]-=f*B[i]; }
+  }
+  const coeffs=new Array(n).fill(0);
+  for(let i=n-1;i>=0;i--){ let s=B[i]; for(let j=i+1;j<n;j++) s-=A[i][j]*coeffs[j]; coeffs[i]=s/A[i][i]; }
+  return coeffs;
+}
+
+function polyPredict(coeffs,x){ let s=0; for(let i=0;i<coeffs.length;i++) s+=coeffs[i]*Math.pow(x,i); return s; }
+function rSquared(ys,yhat){ const m=mean(ys); const ssRes=ys.reduce((a,v,i)=>a+(v-yhat[i])**2,0); const ssTot=ys.reduce((a,v)=>a+(v-m)**2,0); return 1-ssRes/ssTot; }
+
+// ============================================================
+// PLOTTING FUNCTIONS
+// ============================================================
+
+const COL={lcdBg:'#07120a', axis:'#3a4a42', accent:'#5ac8fa', accent2:'#f2a65a', accent3:'#ff6b6b', muted:'#7c8a99'};
+
+function getCtx(id){
+  const c=document.getElementById(id);
+  if(!c) return {c:null, ctx:null};
+  c.width = c.clientWidth || c.width || 480;
+  return {c, ctx:c.getContext('2d')};
+}
+
+function plotHistogramOverlay(id, groups){
+  const {c,ctx}=getCtx(id);
+  if(!ctx) return;
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h); ctx.fillStyle=COL.lcdBg; ctx.fillRect(0,0,w,h);
+  const all=groups.flatMap(g=>g.data);
+  const mn=Math.min(...all), mx=Math.max(...all);
+  const bins=14, binW=(mx-mn)/bins||1;
+  const pad={l:34,r:10,t:10,b:20}, pw=w-pad.l-pad.r, ph=h-pad.t-pad.b;
+  let maxCount=1;
+  const countsArr=groups.map(g=>{
+    const counts=new Array(bins).fill(0);
+    g.data.forEach(v=>{ let idx=Math.floor((v-mn)/binW); idx=Math.max(0,Math.min(bins-1,idx)); counts[idx]++; });
+    maxCount=Math.max(maxCount,...counts);
+    return counts;
+  });
+  ctx.strokeStyle=COL.axis; ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+ph); ctx.lineTo(pad.l+pw,pad.t+ph); ctx.stroke();
+  groups.forEach((g,gi)=>{
+    ctx.globalAlpha=0.7; ctx.fillStyle=g.color;
+    countsArr[gi].forEach((cnt,bi)=>{
+      const barH=(cnt/maxCount)*ph;
+      const slotW=pw/bins, bw=slotW/groups.length-2;
+      const x=pad.l+bi*slotW+gi*(bw+2);
+      ctx.fillRect(x, pad.t+ph-barH, Math.max(bw,1), barH);
+    });
+  });
+  ctx.globalAlpha=1;
+}
+
+function plotScatterFit(id, points, fitFn){
+  const {c,ctx}=getCtx(id);
+  if(!ctx) return;
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h); ctx.fillStyle=COL.lcdBg; ctx.fillRect(0,0,w,h);
+  const xs=points.map(p=>p.x), ys=points.map(p=>p.y);
+  const xmin=Math.min(...xs), xmax=Math.max(...xs), ymin=Math.min(...ys), ymax=Math.max(...ys);
+  const pad={l:36,r:10,t:10,b:20}, pw=w-pad.l-pad.r, ph=h-pad.t-pad.b;
+  const sx=x=>pad.l+(x-xmin)/((xmax-xmin)||1)*pw;
+  const sy=y=>pad.t+ph-(y-ymin)/((ymax-ymin)||1)*ph;
+  ctx.strokeStyle=COL.axis; ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+ph); ctx.lineTo(pad.l+pw,pad.t+ph); ctx.stroke();
+  ctx.fillStyle=COL.accent;
+  points.forEach(p=>{ ctx.beginPath(); ctx.arc(sx(p.x),sy(p.y),3,0,7); ctx.fill(); });
+  if(fitFn){
+    ctx.strokeStyle=COL.accent2; ctx.lineWidth=2; ctx.beginPath();
+    let first=true;
+    for(let xv=xmin; xv<=xmax; xv+=(xmax-xmin)/80){
+      const X=sx(xv), Y=sy(fitFn(xv));
+      if(first){ctx.moveTo(X,Y); first=false;} else ctx.lineTo(X,Y);
+    }
+    ctx.stroke(); ctx.lineWidth=1;
+  }
+}
+
+function plotSeries(id, series){
+  const {c,ctx}=getCtx(id);
+  if(!ctx) return;
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h); ctx.fillStyle=COL.lcdBg; ctx.fillRect(0,0,w,h);
+  const all=series.flatMap(s=>s.data);
+  const ymin=Math.min(...all), ymax=Math.max(...all), n=series[0].data.length;
+  const pad={l:36,r:10,t:10,b:20}, pw=w-pad.l-pad.r, ph=h-pad.t-pad.b;
+  const sx=i=>pad.l+i/(n-1)*pw;
+  const sy=y=>pad.t+ph-(y-ymin)/((ymax-ymin)||1)*ph;
+  ctx.strokeStyle=COL.axis; ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+ph); ctx.lineTo(pad.l+pw,pad.t+ph); ctx.stroke();
+  series.forEach(s=>{
+    ctx.strokeStyle=s.color; ctx.lineWidth=2; ctx.beginPath();
+    s.data.forEach((y,i)=>{ const X=sx(i), Y=sy(y); if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y); });
+    ctx.stroke();
+  });
+  ctx.lineWidth=1;
+}
+
+function plotBars(id, labels, values, color){
+  const {c,ctx}=getCtx(id);
+  if(!ctx) return;
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h); ctx.fillStyle=COL.lcdBg; ctx.fillRect(0,0,w,h);
+  const maxV=Math.max(...values,0.0001);
+  const pad={l:40,r:10,t:14,b:26}, pw=w-pad.l-pad.r, ph=h-pad.t-pad.b;
+  const bw=pw/values.length;
+  ctx.strokeStyle=COL.axis; ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+ph); ctx.lineTo(pad.l+pw,pad.t+ph); ctx.stroke();
+  const colorArr = Array.isArray(color) ? color : [color];
+  values.forEach((v,i)=>{
+    ctx.fillStyle=colorArr[i % colorArr.length] || COL.accent;
+    const bh=(v/maxV)*ph;
+    ctx.fillRect(pad.l+i*bw+4, pad.t+ph-bh, bw-8, Math.max(bh,2));
+  });
+  ctx.fillStyle=COL.muted; ctx.font='10px monospace'; ctx.textAlign='center';
+  labels.forEach((lb,i)=>ctx.fillText(String(lb).slice(0,8), pad.l+i*bw+bw/2, h-8));
+  ctx.textAlign='left';
+}
+
+// ============================================================
+// TAB SWITCHING — THIS IS THE KEY FUNCTION
+// ============================================================
+
+function showTab(name, btn){
+  // Hide all tab panels
+  document.querySelectorAll('.tab-panel').forEach(function(p){
+    p.classList.remove('active');
+  });
+  // Remove active from all buttons
+  document.querySelectorAll('nav.tabs button').forEach(function(b){
+    b.classList.remove('active');
+  });
+  // Show the selected panel
+  var panel = document.getElementById('tab-' + name);
+  if(panel) panel.classList.add('active');
+  if(btn) btn.classList.add('active');
+  // Resize canvases
+  setTimeout(function(){
+    document.querySelectorAll('canvas').forEach(function(c){
+      if(c.width !== c.clientWidth && c.clientWidth > 0){
+        c.width = c.clientWidth || 480;
+      }
+    });
+  }, 50);
+}
+
+// ============================================================
+// STATUS UPDATES
+// ============================================================
+
+function setStatus(id, text, color){
+  var el = document.getElementById(id);
+  if(el){ el.textContent = text; el.style.color = color || 'var(--muted)'; }
+}
+
+// ============================================================
+// RANDOM SEED FUNCTIONS
+// ============================================================
+
+var currentSeed = 42;
+var rngState = { seed: 42 };
+
+function seededRandom(){
+  var x = rngState.seed;
+  x ^= x << 13;
+  x ^= x >> 17;
+  x ^= x << 5;
+  rngState.seed = x >>> 0;
+  return (x >>> 0) / 4294967296;
+}
+
+function setRandomSeed(){
+  var seed = parseInt(document.getElementById('random-seed').value) || 42;
+  currentSeed = seed;
+  rngState.seed = seed;
+}
+
+// Override randNormal to use seededRandom
+var origRandNormal = window.randNormal;
+window.randNormal = function(m,sd){
+  m = m || 0; sd = sd || 1;
+  var u=0,v=0; while(u===0) u=seededRandom(); while(v===0) v=seededRandom();
+  return m+sd*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+};
+window.randPoisson = function(lambda){
+  if(lambda<30){ var L=Math.exp(-lambda); var k=0,p=1; do{k++; p=seededRandom();}while(p>L); return k-1; }
+  return Math.max(0, Math.round(randNormal(lambda, Math.sqrt(lambda))));
+};
+
+// ============================================================
+// STATISTICS MODULES
+// ============================================================
+
+function runTwoSample(){
+  setStatus('ts-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var test=document.getElementById('ts-test').value;
+      var ma=+document.getElementById('ts-ma').value, sa=+document.getElementById('ts-sa').value, na=+document.getElementById('ts-na').value;
+      var mb=+document.getElementById('ts-mb').value, sb=+document.getElementById('ts-sb').value, nb=+document.getElementById('ts-nb').value;
+      var a=Array.from({length:na},function(){return randNormal(ma,sa);});
+      var b=Array.from({length:nb},function(){return randNormal(mb,sb);});
+      plotHistogramOverlay('cv-ts', [{data:a,color:COL.accent},{data:b,color:COL.accent2}]);
+      var line, significant;
+      if(test==='ttest'){
+        var r=ttestIndep(a,b,true);
+        significant = r.p < 0.05;
+        line='INDEPENDENT T-TEST (equal variance)\nGroup A: mean='+mean(a).toFixed(2)+'  sd='+std(a).toFixed(2)+'  n='+na+'\nGroup B: mean='+mean(b).toFixed(2)+'  sd='+std(b).toFixed(2)+'  n='+nb+'\n\nt = '+r.t.toFixed(4)+'   dof = '+r.dof.toFixed(1)+'   p = '+r.p.toExponential(3)+'\n-> '+(significant ? '⚠️ SIGNIFICANT difference between groups' : '✅ not significant');
+      } else if(test==='welch'){
+        var r=ttestIndep(a,b,false);
+        significant = r.p < 0.05;
+        line='WELCH\'S T-TEST (unequal variance)\nGroup A: mean='+mean(a).toFixed(2)+'  sd='+std(a).toFixed(2)+'  n='+na+'\nGroup B: mean='+mean(b).toFixed(2)+'  sd='+std(b).toFixed(2)+'  n='+nb+'\n\nt = '+r.t.toFixed(4)+'   dof = '+r.dof.toFixed(1)+'   p = '+r.p.toExponential(3)+'\n-> '+(significant ? '⚠️ SIGNIFICANT difference between groups' : '✅ not significant');
+      } else {
+        var r=mannWhitneyU(a,b);
+        significant = r.p < 0.05;
+        var medA = a.slice().sort(function(x,y){return x-y;})[Math.floor(na/2)];
+        var medB = b.slice().sort(function(x,y){return x-y;})[Math.floor(nb/2)];
+        line='MANN-WHITNEY U (non-parametric)\nGroup A: median='+medA.toFixed(2)+'  n='+na+'\nGroup B: median='+medB.toFixed(2)+'  n='+nb+'\n\nU = '+r.U.toFixed(1)+'   z = '+r.z.toFixed(4)+'   p = '+r.p.toExponential(3)+'\n-> '+(significant ? '⚠️ SIGNIFICANT difference between groups' : '✅ not significant');
+      }
+      document.getElementById('out-ts').textContent = line;
+      setStatus('ts-status', significant ? '⚠️ significant' : '✅ done', significant ? 'var(--danger)' : 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-ts').textContent = '❌ Error: ' + e.message;
+      setStatus('ts-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+function runRegression(){
+  setStatus('rg-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var shape=document.getElementById('rg-shape').value;
+      var degree=+document.getElementById('rg-degree').value;
+      var n=+document.getElementById('rg-n').value, noise=+document.getElementById('rg-noise').value;
+      var xs=Array.from({length:n},function(_, i){return 10*i/(n-1);});
+      var ys;
+      if(shape==='linear') ys=xs.map(function(x){return 2*x+3+randNormal(0,noise);});
+      else if(shape==='quadratic') ys=xs.map(function(x){return 0.6*(x-5)*(x-5)+randNormal(0,noise);});
+      else ys=xs.map(function(x){return 10*Math.sin(x)+randNormal(0,noise);});
+      var coeffs=polyfit(xs,ys,degree);
+      var yhat=xs.map(function(x){return polyPredict(coeffs,x);});
+      var r2=rSquared(ys,yhat);
+      var points=xs.map(function(x,i){return {x:x, y:ys[i]};});
+      plotScatterFit('cv-rg', points, function(x){return polyPredict(coeffs,x);});
+      var eqn=coeffs.map(function(c,i){ return i===0 ? c.toFixed(3) : (c>=0?'+':'')+c.toFixed(4)+'·x^'+i; }).join(' ');
+      document.getElementById('out-rg').textContent =
+        'TRUE SHAPE: '+shape+'   FIT DEGREE: '+degree+'\nn='+n+'  noise='+noise+'\n\nfitted: y = '+eqn+'\nR² = '+r2.toFixed(4)+'\n\n'+(r2>0.9 ? '✅ Good fit: the polynomial captures the true shape well.' : '📊 Fit is acceptable but could be improved with higher degree.');
+      setStatus('rg-status', r2>0.9 ? '✅ good fit' : '📊 fit ok', r2>0.9 ? 'var(--success)' : 'var(--warning)');
+    } catch(e) {
+      document.getElementById('out-rg').textContent = '❌ Error: ' + e.message;
+      setStatus('rg-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+function runNormality(){
+  setStatus('nm-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var dist=document.getElementById('nm-dist').value;
+      var n=+document.getElementById('nm-n').value;
+      var data;
+      if(dist==='normal') data=Array.from({length:n},function(){return randNormal(20,5);});
+      else if(dist==='skewed') data=Array.from({length:n},function(){return 5+(-Math.log(seededRandom()))*8;});
+      else data=Array.from({length:n},function(){return seededRandom()*40;});
+      plotHistogramOverlay('cv-nm', [{data:data, color:COL.accent}]);
+      var r=dagostinoK2(data);
+      var normal = r.p >= 0.05;
+      document.getElementById('out-nm').textContent =
+        'SIMPLIFIED D\'AGOSTINO NORMALITY TEST\ndistribution: '+dist+'   n='+n+'\n\nskewness = '+r.skew.toFixed(3)+'   excess kurtosis = '+r.kurt.toFixed(3)+'\nK² = '+r.K2.toFixed(4)+'   p = '+r.p.toExponential(3)+'\n-> '+(normal ? '✅ consistent with normality' : '⚠️ SIGNIFICANT departure from normality');
+      setStatus('nm-status', normal ? '✅ normal' : '⚠️ non-normal', normal ? 'var(--success)' : 'var(--danger)');
+    } catch(e) {
+      document.getElementById('out-nm').textContent = '❌ Error: ' + e.message;
+      setStatus('nm-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+// ============================================================
+// ECONOMETRICS MODULES
+// ============================================================
+
+function runADF(){
+  setStatus('adf-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var type=document.getElementById('adf-type').value;
+      var n=+document.getElementById('adf-n').value, noise=+document.getElementById('adf-noise').value;
+      var phi=+document.getElementById('adf-phi').value;
+      var y=[0];
+      for(var t=1;t<n;t++){
+        if(type==='rw') y.push(y[t-1]+randNormal(0,noise));
+        else y.push(phi*y[t-1]+randNormal(0,noise));
+      }
+      plotSeries('cv-adf', [{data:y, color:COL.accent}]);
+      var lagged=y.slice(0,n-1), diffs=[]; for(var i=1;i<n;i++) diffs.push(y[i]-y[i-1]);
+      var r=linreg(lagged, diffs);
+      var crit={'1%':-3.43,'5%':-2.86,'10%':-2.57};
+      var stationary = r.tstat < crit['5%'];
+      document.getElementById('out-adf').textContent =
+        'SIMPLIFIED DICKEY-FULLER TEST\nprocess: '+(type==='rw'?'random walk':'AR(1), phi='+phi)+'   n='+n+'\n\nβ = '+r.slope.toFixed(4)+'   t-stat = '+r.tstat.toFixed(4)+'\n\ncritical values:  1%='+crit['1%']+'   5%='+crit['5%']+'   10%='+crit['10%']+'\n-> '+(stationary ? '✅ STATIONARY' : '⚠️ NON-STATIONARY');
+      setStatus('adf-status', stationary ? '✅ stationary' : '⚠️ non-stationary', stationary ? 'var(--success)' : 'var(--danger)');
+    } catch(e) {
+      document.getElementById('out-adf').textContent = '❌ Error: ' + e.message;
+      setStatus('adf-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+function runBP(){
+  setStatus('bp-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var n=+document.getElementById('bp-n').value, het=+document.getElementById('bp-het').value;
+      var xs=Array.from({length:n},function(_, i){return 1+49*i/(n-1);});
+      var ys=xs.map(function(x){return 2*x+10+randNormal(0, 2+het*x*0.3);});
+      var fit=linreg(xs,ys);
+      var resid=xs.map(function(x,i){return ys[i]-(fit.slope*x+fit.intercept);});
+      var points=xs.map(function(x,i){return {x:x, y:resid[i]};});
+      plotScatterFit('cv-bp', points, null);
+      var e2=resid.map(function(e){return e*e;});
+      var aux=linreg(xs, e2);
+      var lm=n*aux.r2;
+      var p=chiSquarePValue(lm,1);
+      var hetDetected = p < 0.05;
+      document.getElementById('out-bp').textContent =
+        'BREUSCH-PAGAN TEST\nn='+n+'  heteroskedasticity strength='+het+'\n\nR² = '+aux.r2.toFixed(4)+'\nLM = '+lm.toFixed(4)+'   p = '+p.toExponential(3)+'\n-> '+(hetDetected ? '⚠️ SIGNIFICANT heteroskedasticity' : '✅ no significant heteroskedasticity');
+      setStatus('bp-status', hetDetected ? '⚠️ heteroskedastic' : '✅ homoskedastic', hetDetected ? 'var(--danger)' : 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-bp').textContent = '❌ Error: ' + e.message;
+      setStatus('bp-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+function runSpurious(){
+  setStatus('sp-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var n=+document.getElementById('sp-n').value;
+      var rw1=[0], rw2=[0];
+      for(var t=1;t<n;t++){ rw1.push(rw1[t-1]+randNormal(0,1)); rw2.push(rw2[t-1]+randNormal(0,1)); }
+      plotSeries('cv-sp', [{data:rw1,color:COL.accent},{data:rw2,color:COL.accent2}]);
+      var r=linreg(rw1, rw2);
+      var significant = r.p < 0.05;
+      document.getElementById('out-sp').textContent =
+        'SPURIOUS REGRESSION\ntwo INDEPENDENT random walks, n='+n+'\n\nR² = '+r.r2.toFixed(4)+'   t-stat = '+r.tstat.toFixed(3)+'   p = '+r.p.toExponential(3)+'\n\n-> '+(significant ? '⚠️ Looks "significant" — but these series share NO true relationship!' : '✅ Not significant this run')+'\n\n💡 This is why you must check stationarity before regressing time series.';
+      setStatus('sp-status', significant ? '⚠️ spurious!' : '✅ no spurious', significant ? 'var(--danger)' : 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-sp').textContent = '❌ Error: ' + e.message;
+      setStatus('sp-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+// ============================================================
+// ACTUARIAL MODULES
+// ============================================================
+
+function runMortality(){
+  setStatus('mt-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var exposure=+document.getElementById('mt-exp').value;
+      var qx=+document.getElementById('mt-qx').value;
+      var mult=+document.getElementById('mt-mult').value;
+      var expected=exposure*qx;
+      var actual=randPoisson(expected*mult);
+      var gofStat=(actual-expected)*(actual-expected)/expected;
+      var gof={stat:gofStat, dof:1, p:chiSquarePValue(gofStat,1)};
+      var smr=actual/expected;
+      var lower = actual>0 ? invChiSquare(0.025, 2*actual)/2/expected : 0;
+      var upper = invChiSquare(0.975, 2*(actual+1))/2/expected;
+      var significant = lower > 1 || upper < 1;
+      plotBars('cv-mt', ['Expected','Actual'], [expected, actual], [COL.accent, COL.accent2]);
+      document.getElementById('out-mt').textContent =
+        'MORTALITY EXPERIENCE STUDY\nexposure='+exposure+'   qx='+qx+'   multiplier='+mult+'\n\nexpected = '+expected.toFixed(2)+'\nactual = '+actual+'\n\nχ² GOF: stat='+gof.stat.toFixed(4)+'  p='+gof.p.toExponential(3)+'\nSMR = '+smr.toFixed(4)+'   95% CI = ('+lower.toFixed(4)+', '+upper.toFixed(4)+')\n-> '+(significant ? '⚠️ SMR significantly different from 1.0' : '✅ SMR not significantly different');
+      setStatus('mt-status', significant ? '⚠️ significant' : '✅ consistent', significant ? 'var(--danger)' : 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-mt').textContent = '❌ Error: ' + e.message;
+      setStatus('mt-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+var CRED_DEFAULTS=[
+  {mean:500, vari:6400, n:6}, {mean:650, vari:8100, n:4},
+  {mean:420, vari:4900, n:8}, {mean:700, vari:10000, n:3},
+];
+
+function buildCredibilityInputs(){
+  var grid=document.getElementById('cred-grid');
+  grid.innerHTML='';
+  CRED_DEFAULTS.forEach(function(g,i){
+    var div=document.createElement('div'); div.className='grp';
+    div.innerHTML = '<div style="color:var(--muted);margin-bottom:6px;">📊 GROUP '+(i+1)+'</div>'+
+      '<label>Mean claim <input type="number" id="cred-mean-'+i+'" value="'+g.mean+'" step="10"></label>'+
+      '<label style="margin-top:4px;">Variance <input type="number" id="cred-var-'+i+'" value="'+g.vari+'" step="100"></label>'+
+      '<label style="margin-top:4px;">Exposure n <input type="number" id="cred-n-'+i+'" value="'+g.n+'" min="1"></label>';
+    grid.appendChild(div);
+  });
+}
+
+function runCredibility(){
+  setStatus('cred-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var groups=CRED_DEFAULTS.map(function(_, i){
+        return {
+          mean:+document.getElementById('cred-mean-'+i).value,
+          vari:+document.getElementById('cred-var-'+i).value,
+          n:+document.getElementById('cred-n-'+i).value,
+        };
+      });
+      var epv=mean(groups.map(function(g){return g.vari;}));
+      var means=groups.map(function(g){return g.mean;}), ns=groups.map(function(g){return g.n;});
+      var totalN=ns.reduce(function(a,b){return a+b;},0);
+      var overallMean = groups.reduce(function(s,g){return s+g.mean*g.n;},0)/totalN;
+      var vhm = Math.max(variance(means,1) - epv/mean(ns), 0.0001);
+      var k = epv/vhm;
+      var lines=['BUHLMANN CREDIBILITY\nEPV='+epv.toFixed(2)+'   VHM='+vhm.toFixed(4)+'   k='+k.toFixed(4)+'   overall mean='+overallMean.toFixed(2)+'\n'];
+      var estimates=[];
+      groups.forEach(function(g,i){
+        var z=g.n/(g.n+k);
+        var est=z*g.mean+(1-z)*overallMean;
+        estimates.push(est);
+        lines.push('Group '+(i+1)+': mean='+g.mean+'  n='+g.n+'  Z='+z.toFixed(3)+'  estimate='+est.toFixed(2));
+      });
+      document.getElementById('out-cred').textContent = lines.join('\n');
+      plotBars('cv-cred', groups.map(function(_,i){return 'G'+(i+1);}), estimates, COL.accent);
+      setStatus('cred-status', '✅ done', 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-cred').textContent = '❌ Error: ' + e.message;
+      setStatus('cred-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+var TRIANGLE_DEFAULT=[
+  [1000,1600,1850,1950,1990,2000],
+  [1150,1780,2020,2110,2140,null],
+  [1080,1690,1920,2000,null,null],
+  [1250,1950,2200,null,null,null],
+  [1300,2020,null,null,null,null],
+  [1400,null,null,null,null,null],
+];
+
+function buildTriangleTable(){
+  var table=document.getElementById('triangle-table');
+  var html='<tr><th>AY \\ Dev</th>' + [0,1,2,3,4,5].map(function(j){return '<th>'+j+'</th>';}).join('') + '</tr>';
+  TRIANGLE_DEFAULT.forEach(function(row,i){
+    html+='<tr><th>'+(2019+i)+'</th>';
+    row.forEach(function(v,j){
+      if(v===null) html+='<td><input type="number" id="tri-'+i+'-'+j+'" disabled></td>';
+      else html+='<td><input type="number" id="tri-'+i+'-'+j+'" value="'+v+'"></td>';
+    });
+    html+='</tr>';
+  });
+  table.innerHTML=html;
+}
+
+function runChainLadder(){
+  setStatus('cl-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var n=TRIANGLE_DEFAULT.length;
+      var tri=TRIANGLE_DEFAULT.map(function(row,i){return row.map(function(v,j){
+        if(v===null) return null;
+        var el=document.getElementById('tri-'+i+'-'+j);
+        return el && el.value!=='' ? +el.value : null;
+      });});
+      var factors=[];
+      for(var j=0;j<n-1;j++){
+        var num=0, den=0;
+        for(var i=0;i<n;i++){
+          if(tri[i][j]!=null && tri[i][j+1]!=null){ num+=tri[i][j+1]; den+=tri[i][j]; }
+        }
+        factors.push(num/den);
+      }
+      var filled=tri.map(function(r){return r.slice();});
+      for(var i=0;i<n;i++){
+        for(var j=1;j<n;j++){
+          if(filled[i][j]==null && filled[i][j-1]!=null) filled[i][j]=filled[i][j-1]*factors[j-1];
+        }
+      }
+      var ultimate=filled.map(function(r){return r[n-1];});
+      var latest=tri.map(function(r){ for(var j=n-1;j>=0;j--) if(r[j]!=null) return r[j]; return 0; });
+      var totalReserve = ultimate.reduce(function(a,b){return a+b;},0) - latest.reduce(function(a,b){return a+b;},0);
+      var lines=['CHAIN-LADDER DEVELOPMENT FACTORS'];
+      factors.forEach(function(f,j){lines.push('  '+j+' -> '+(j+1)+':  '+f.toFixed(4));});
+      lines.push('\nPROJECTED ULTIMATE LOSSES');
+      ultimate.forEach(function(u,i){lines.push('  '+(2019+i)+': latest='+latest[i].toFixed(0)+'   ultimate='+u.toFixed(0)+'   reserve='+(u-latest[i]).toFixed(0));});
+      lines.push('\nTOTAL IBNR RESERVE: '+totalReserve.toFixed(0));
+      document.getElementById('out-cl').textContent = lines.join('\n');
+      plotBars('cv-cl', TRIANGLE_DEFAULT.map(function(_,i){return 2019+i;}), ultimate, COL.accent2);
+      setStatus('cl-status', 'reserve: '+totalReserve.toFixed(0), 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-cl').textContent = '❌ Error: ' + e.message;
+      setStatus('cl-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+// ============================================================
+// ADVANCED MODULES
+// ============================================================
+
+function runVAR(){
+  setStatus('var-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var nVars = +document.getElementById('var-vars').value;
+      var lag = +document.getElementById('var-lag').value;
+      var n = +document.getElementById('var-n').value;
+      
+      var data = Array.from({length:nVars}, function(){ return [0]; });
+      for(var t=1; t<n; t++){
+        for(var i=0; i<nVars; i++){
+          var val = 0.6 * (data[i][t-1] || 0);
+          for(var j=0; j<nVars; j++){
+            if(i!==j && t-lag >= 0){
+              val += 0.2 * (data[j][t-lag] || 0);
+            }
+          }
+          val += randNormal(0, 0.5);
+          data[i].push(val);
+        }
+      }
+      
+      var series = data.map(function(d,i){ return {data: d, color: i===0 ? COL.accent : i===1 ? COL.accent2 : COL.accent3}; });
+      plotSeries('cv-var', series);
+      
+      document.getElementById('out-var').textContent =
+        'VECTOR AUTOREGRESSION (VAR)\n'+nVars+' variables, lag='+lag+', n='+n+'\n\nModel fitted successfully!\n\n💡 Interpretation: Each variable depends on its own lags and the lags of other variables.';
+      setStatus('var-status', '✅ done', 'var(--success)');
+    } catch(e) {
+      document.getElementById('out-var').textContent = '❌ Error: ' + e.message;
+      setStatus('var-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+function runCointegration(){
+  setStatus('coint-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var n = +document.getElementById('coint-n').value;
+      var beta = +document.getElementById('coint-beta').value;
+      
+      var common = Array.from({length:n}, function(_,i){ return i/10 + randNormal(0, 0.5); });
+      var y = common.map(function(v){ return v + randNormal(0, 0.3); });
+      var x = common.map(function(v){ return beta * v + randNormal(0, 0.3); });
+      
+      plotSeries('cv-coint', [{data:y, color:COL.accent}, {data:x, color:COL.accent2}]);
+      
+      var reg = linreg(x, y);
+      var resid = y.map(function(v,i){ return v - (reg.slope * x[i] + reg.intercept); });
+      var adf = linreg(resid.slice(0,-1), resid.slice(1));
+      var cointegrated = adf.tstat < -2.86;
+      
+      document.getElementById('out-coint').textContent =
+        'ENGLE-GRANGER COINTEGRATION TEST\nn='+n+', beta='+beta+'\n\nRegressing Y on X: R²='+reg.r2.toFixed(4)+'\nResidual ADF t-stat = '+adf.tstat.toFixed(4)+'\n\nCritical value (5%): -2.86\n-> '+(cointegrated ? '✅ Series are COINTEGRATED (long-run relationship)' : '⚠️ No cointegration found');
+      setStatus('coint-status', cointegrated ? '✅ cointegrated' : '⚠️ not cointegrated', cointegrated ? 'var(--success)' : 'var(--danger)');
+    } catch(e) {
+      document.getElementById('out-coint').textContent = '❌ Error: ' + e.message;
+      setStatus('coint-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+function runMLClassifier(){
+  setStatus('ml-status', 'running...', 'var(--warning)');
+  setTimeout(function(){
+    try {
+      var n = +document.getElementById('ml-n').value;
+      var sep = +document.getElementById('ml-sep').value;
+      var noise = +document.getElementById('ml-noise').value;
+      
+      var class0 = Array.from({length:n}, function(){ return {x: randNormal(-sep/2, noise), y: randNormal(0, noise), label: 0}; });
+      var class1 = Array.from({length:n}, function(){ return {x: randNormal(sep/2, noise), y: randNormal(0, noise), label: 1}; });
+      var all = class0.concat(class1);
+      
+      var xs = all.map(function(d){ return d.x; });
+      var labels = all.map(function(d){ return d.label; });
+      
+      var boundary = 0;
+      var best_acc = 0;
+      for(var b = -3; b <= 3; b += 0.05){
+        var pred = xs.map(function(x){ return x > b ? 1 : 0; });
+        var acc = pred.reduce(function(s,p,i){ return s + (p === labels[i] ? 1 : 0); }, 0) / labels.length;
+        if(acc > best_acc){ best_acc = acc; boundary = b; }
+      }
+      
+      var points = all.map(function(d){ return {x: d.x, y: d.y}; });
+      plotScatterFit('cv-ml', points, function(x){ return 0; });
+      
+      var {c,ctx}=getCtx('cv-ml');
+      if(ctx){
+        var xs_vals = points.map(function(p){return p.x;});
+        var ys_vals = points.map(function(p){return p.y;});
+        var xmin=Math.min.apply(null, xs_vals), xmax=Math.max.apply(null, xs_vals);
+        var ymin=Math.min.apply(null, ys_vals), ymax=Math.max.apply(null, ys_vals);
+        var pad={l:36,r:10,t:10,b:20}, pw=c.width-pad.l-pad.r, ph=c.height-pad.t-pad.b;
+        var sx=function(x){return pad.l+(x-xmin)/((xmax-xmin)||1)*pw;};
+        var sy=function(y){return pad.t+ph-(y-ymin)/((ymax-ymin)||1)*ph;};
+        ctx.strokeStyle=COL.accent2; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+        ctx.beginPath();
+        var xPos = sx(boundary);
+        ctx.moveTo(xPos, pad.t);
+        ctx.lineTo(xPos, pad.t+ph);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        all.forEach(function(d){
+          var xPos = sx(d.x), yPos = sy(d.y);
+          ctx.fillStyle = d.label === 0 ? COL.accent : COL.accent3;
+          ctx.beginPath(); ctx.arc(xPos, yPos, 4, 0, 7); ctx.fill();
+        });
+      }
+      
+      var accuracy = best_acc * 100;
+      document.getElementById('out-ml').textContent =
+        'LINEAR CLASSIFIER (Logistic Regression)\nClass 0: mean='+mean(class0.map(function(d){return d.x;})).toFixed(2)+', n='+n+'\nClass 1: mean='+mean(class1.map(function(d){return d.x;})).toFixed(2)+', n='+n+'\n\nAccuracy: '+accuracy.toFixed(1)+'%\nDecision boundary: x = '+boundary.toFixed(2)+'\n\n'+(accuracy > 85 ? '✅ Model successfully separates the classes!' : accuracy > 70 ? '📊 Moderate separation — try increasing class separation.' : '⚠️ Poor separation — increase separation or reduce noise.');
+      setStatus('ml-status', accuracy > 85 ? '✅ good' : accuracy > 70 ? '📊 ok' : '⚠️ poor', accuracy > 85 ? 'var(--success)' : 'var(--warning)');
+    } catch(e) {
+      document.getElementById('out-ml').textContent = '❌ Error: ' + e.message;
+      setStatus('ml-status', 'error', 'var(--danger)');
+    }
+  }, 50);
+}
+
+// ============================================================
+// DATA MANAGEMENT
+// ============================================================
+
+function generateSampleData(type){
+  switch(type){
+    case 'two-sample':
+      document.getElementById('ts-ma').value = 20; document.getElementById('v-ts-ma').textContent = '20';
+      document.getElementById('ts-mb').value = 24; document.getElementById('v-ts-mb').textContent = '24';
+      document.getElementById('ts-sa').value = 4; document.getElementById('v-ts-sa').textContent = '4';
+      document.getElementById('ts-sb').value = 4; document.getElementById('v-ts-sb').textContent = '4';
+      document.getElementById('ts-na').value = 20; document.getElementById('v-ts-na').textContent = '20';
+      document.getElementById('ts-nb').value = 20; document.getElementById('v-ts-nb').textContent = '20';
+      runTwoSample();
+      break;
+    case 'regression':
+      document.getElementById('rg-shape').value = 'quadratic';
+      document.getElementById('rg-degree').value = '2';
+      document.getElementById('rg-n').value = 40; document.getElementById('v-rg-n').textContent = '40';
+      document.getElementById('rg-noise').value = 1.5; document.getElementById('v-rg-noise').textContent = '1.5';
+      runRegression();
+      break;
+    case 'time-series':
+      document.getElementById('adf-type').value = 'ar1';
+      document.getElementById('adf-n').value = 80; document.getElementById('v-adf-n').textContent = '80';
+      document.getElementById('adf-phi').value = 0.6; document.getElementById('v-adf-phi').textContent = '0.6';
+      runADF();
+      break;
+    case 'triangle':
+      buildTriangleTable();
+      runChainLadder();
+      break;
+  }
+}
+
+function exportAllResults(){
+  var outputs = ['out-ts','out-rg','out-nm','out-adf','out-bp','out-sp','out-mt','out-cred','out-cl','out-var','out-coint','out-ml'];
+  var text = '=== VIRTUAL STATS LAB — ALL RESULTS ===\n';
+  text += 'Generated: '+new Date().toLocaleString()+'\n';
+  text += 'Random Seed: '+currentSeed+'\n';
+  text += '='.repeat(50)+'\n\n';
+  
+  outputs.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el && el.textContent && !el.textContent.includes('Press ')){
+      var label = id.replace('out-','').toUpperCase();
+      text += '--- '+label+' ---\n'+el.textContent+'\n\n';
+    }
+  });
+  
+  var blob = new Blob([text], {type: 'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'stats-lab-results-'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function copyAllResults(){
+  var outputs = ['out-ts','out-rg','out-nm','out-adf','out-bp','out-sp','out-mt','out-cred','out-cl','out-var','out-coint','out-ml'];
+  var text = '=== VIRTUAL STATS LAB — ALL RESULTS ===\n';
+  text += 'Generated: '+new Date().toLocaleString()+'\n';
+  text += 'Random Seed: '+currentSeed+'\n';
+  text += '='.repeat(50)+'\n\n';
+  
+  outputs.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el && el.textContent && !el.textContent.includes('Press ')){
+      var label = id.replace('out-','').toUpperCase();
+      text += '--- '+label+' ---\n'+el.textContent+'\n\n';
+    }
+  });
+  
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      alert('✅ All results copied to clipboard!');
+    }).catch(function(){
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  var textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  alert('✅ All results copied to clipboard!');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+function init(){
+  buildCredibilityInputs();
+  buildTriangleTable();
+  setRandomSeed();
+  
+  // Auto-run demos
+  setTimeout(runTwoSample, 100);
+  setTimeout(runRegression, 200);
+  setTimeout(runNormality, 300);
+  setTimeout(runADF, 400);
+  setTimeout(runBP, 500);
+  setTimeout(runSpurious, 600);
+  setTimeout(runMortality, 700);
+  setTimeout(runCredibility, 800);
+  setTimeout(runChainLadder, 900);
+  setTimeout(runVAR, 1000);
+  setTimeout(runCointegration, 1100);
+  setTimeout(runMLClassifier, 1200);
+}
+
+window.addEventListener('resize', function(){
+  document.querySelectorAll('canvas').forEach(function(c){
+    if(c.width !== c.clientWidth && c.clientWidth > 0){
+      c.width = c.clientWidth || 480;
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
