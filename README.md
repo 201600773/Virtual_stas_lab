@@ -1,5 +1,5 @@
 Virtual Stats Lab
-Interactive Statistics · Econometrics · Actuarial Science Lab
+Interactive Statistics · Econometrics · Actuarial Science · Machine Learning
 Run statistical tests in your browser — no installation, no server, no internet needed!
 
 https://img.shields.io/badge/demo-live-brightgreen
@@ -22,7 +22,9 @@ Perfect for:
 
 📈 Data scientists exploring statistical methods
 
-🤖 Anyone who wants to understand statistical tests interactively
+🤖 ML practitioners understanding classification basics
+
+📋 Actuaries practicing reserving and credibility methods
 
 ✨ Features
 📊 Statistics
@@ -31,6 +33,10 @@ Two-Sample Comparison: t-tests, Welch's test, Mann-Whitney U
 Regression Analysis: Linear, polynomial, and non-linear fitting
 
 Normality Testing: D'Agostino K² test with visual histograms
+
+ANOVA: One-way analysis of variance with post-hoc comparisons
+
+Chi-Square Tests: Independence testing for contingency tables
 
 Interactive sliders for means, variances, sample sizes
 
@@ -41,12 +47,23 @@ Heteroskedasticity: Breusch-Pagan test with visual fan-shape detection
 
 Spurious Regression Demo: Shows why non-stationary series can't be regressed
 
+VAR Models: Vector Autoregression for multivariate time series
+
+Cointegration: Engle-Granger test for long-run relationships
+
 📋 Actuarial Science
 Mortality Studies: Chi-square GOF, SMR with confidence intervals
 
 Credibility Theory: Bühlmann credibility calculator
 
 Claims Reserving: Chain-Ladder method with IBNR estimation
+
+🤖 Machine Learning
+Linear Classifier: Logistic regression with decision boundary visualization
+
+Classification Accuracy: Real-time performance metrics
+
+Interactive Parameters: Adjust separation, noise, and sample size
 
 🎮 Interactive Mode
 Guided workflow: "What's your question?" → recommended test
@@ -62,7 +79,16 @@ Random Seed Control: Reproducible simulations
 
 Sample Data Generators: Quick data for each module
 
-Export Results: Copy or download all results
+Export Results: Copy, download, or export to PDF
+
+Session Management: Save/load settings to browser storage
+
+📚 Tutorials
+5 Interactive Tutorials: Step-by-step guided learning
+
+Progress Tracking: See your advancement through each tutorial
+
+Hands-on Exercises: Apply concepts in real-time
 
 🚀 Try It Now
 Live Demo
@@ -71,22 +97,29 @@ https://YOUR_USERNAME.github.io/virtual-stats-lab/
 Quick Start
 Open the link above
 
-Choose a tab: Statistics, Econometrics, or Actuarial
+Choose a tab: Statistics, Econometrics, Actuarial, or Advanced
 
 Adjust the sliders and click RUN
 
 Watch results update in real-time
 
-Upload your own data or use the Interactive Mode
+Try the Interactive Mode for guided analysis
+
+Take a Tutorial to learn step-by-step
 
 🎯 Test Selection Guide
 What's Your Question?	Go To	Use Module
 Compare two groups?	Statistics	Module 1 — Two-Sample Comparison
+Compare three or more groups?	Statistics	Module 4 — ANOVA
 Relationship between variables?	Statistics	Module 2 — Regression
 Is my data normally distributed?	Statistics	Module 3 — Normality Check
+Are categorical variables related?	Statistics	Module 5 — Chi-Square Tests
 Is my time series stationary?	Econometrics	Module 1 — Stationarity
 Is variance constant?	Econometrics	Module 2 — Heteroskedasticity
 Why check stationarity before regression?	Econometrics	Module 3 — Spurious Regression
+Do multiple series move together?	Advanced	Module 1 — VAR
+Is there a long-run relationship?	Advanced	Module 2 — Cointegration
+Can I classify data with ML?	Advanced	Module 3 — Linear Classifier
 Is mortality different from the table?	Actuarial	Module 1 — Mortality Study
 How credible is a group's experience?	Actuarial	Module 2 — Credibility
 How much reserve is needed?	Actuarial	Module 3 — Chain-Ladder
@@ -102,6 +135,8 @@ Experiment with the sliders to build intuition
 
 Use tooltips (ⓘ icons) to learn what each parameter means
 
+Take Tutorials for guided learning
+
 For Teachers
 Use modules to demonstrate statistical concepts in class
 
@@ -113,6 +148,8 @@ Generate sample data for homework assignments
 
 Students can copy results for their reports
 
+Use ANOVA to demonstrate multiple group comparisons
+
 For Researchers
 Upload your data via the Data tab
 
@@ -122,7 +159,9 @@ Export all results with one click
 
 Set a random seed for reproducible analysis
 
-📸 Screenshots
+Save your session for later
+
+📸 Example Outputs
 Two-Sample t-Test
 text
 [INDEPENDENT T-TEST (equal variance)]
@@ -131,15 +170,29 @@ Group B: mean=24.15  sd=3.98  n=20
 
 t = -3.2345   dof = 38.0   p = 2.43e-3
 -> ⚠️ SIGNIFICANT difference between groups
-Regression Fit
+ANOVA
 text
-TRUE SHAPE: quadratic   FIT DEGREE: 2
-n=40  noise=1.5
+ONE-WAY ANOVA
+Group 1: mean=15.2  n=30
+Group 2: mean=20.1  n=30
+Group 3: mean=24.8  n=30
 
-fitted: y = 0.603·x² - 6.045·x + 20.567
-R² = 0.9432
+F = 4.567   df1=2   df2=87   p = 0.0123
+-> ⚠️ SIGNIFICANT difference between groups
 
-✅ Good fit: the polynomial captures the true shape well.
+Post-hoc comparisons:
+  Group 1 vs Group 3: p=0.008 ⚠️ Significant
+  Group 2 vs Group 3: p=0.021 ⚠️ Significant
+Logistic Regression (ML)
+text
+LINEAR CLASSIFIER
+Class 0: mean=-1.0, n=50
+Class 1: mean=1.0, n=50
+
+Accuracy: 92.0%
+Decision boundary: x = 0.08
+
+✅ Model successfully separates the two classes!
 Chain-Ladder Reserve
 text
 CHAIN-LADDER DEVELOPMENT FACTORS
@@ -177,12 +230,12 @@ npx serve
 📁 File Structure
 text
 virtual-stats-lab/
-├── index.html          # Single self-contained application
+├── index.html          # Single self-contained application (~120KB)
 ├── README.md           # This documentation
 ├── LICENSE             # MIT License
 └── CNAME               # Custom domain (optional)
 
-Total: ~85KB — No dependencies, no build step, no server required!
+Total: ~120KB — No dependencies, no build step, no server required!
 🔧 Technical Details
 Built With
 Pure HTML5 — No frameworks
@@ -194,27 +247,21 @@ Pure JavaScript — All statistical calculations from scratch
 Canvas API — Real-time plotting
 
 Statistical Methods Implemented
-t-tests (independent, Welch's)
+Parametric Tests: t-tests (independent, Welch's), ANOVA, linear regression
 
-Mann-Whitney U test
+Non-Parametric Tests: Mann-Whitney U, Kruskal-Wallis (planned)
 
-Linear regression with R²
+Time Series: ADF test, VAR, cointegration
 
-Polynomial regression (degree 1-4)
+Categorical: Chi-square tests for independence
 
-D'Agostino K² normality test
+Survival Analysis: Kaplan-Meier (planned)
 
-Simplified Dickey-Fuller test
+Machine Learning: Logistic regression from scratch
 
-Breusch-Pagan heteroskedasticity test
+Actuarial: SMR, Credibility, Chain-Ladder
 
-Chi-square goodness-of-fit
-
-Standardized Mortality Ratio (SMR)
-
-Bühlmann credibility
-
-Chain-Ladder reserving
+Distribution Fitting: Normality tests, goodness-of-fit
 
 Browser Support
 ✅ Chrome 60+
@@ -241,14 +288,23 @@ Sample Data — Pre-built datasets for each module
 
 Educational Output — Explanations of what results mean
 
+Tutorials — Step-by-step guided learning
+
+Session Save — Continue learning where you left off
+
 Teaching Applications
 Concept	Module	Learning Outcome
 Statistical Power	Two-Sample	See how n affects p-values
 Type I/II Errors	Two-Sample	Observe significance at different α
 Overfitting	Regression	Compare R² with different degrees
 Normality	Normality	See how distributions differ
+ANOVA	ANOVA	Understand F-test and post-hoc comparisons
+Chi-Square	Chi-Square	Learn categorical data analysis
 Stationarity	ADF	Understand unit roots
 Spurious Regression	Spurious Demo	Learn why to check stationarity
+VAR	Advanced	Understand multivariate dynamics
+Cointegration	Advanced	Learn long-run relationships
+ML Classification	Advanced	Introduction to supervised learning
 Reserving	Chain-Ladder	Understand IBNR estimation
 Credibility	Credibility	See how Z-scores blend experience
 🤝 Contributing
@@ -267,17 +323,19 @@ Push (git push origin feature/amazing-feature)
 Open a Pull Request
 
 Ideas for Contributions
-Add more statistical tests (ANOVA, chi-square, etc.)
+Add more statistical tests (Kruskal-Wallis, Friedman, etc.)
 
-Improve visualizations
+Improve visualizations (3D plots, interactive heatmaps)
 
-Add more sample data generators
+Add more ML algorithms (SVM, decision trees)
 
-Translate to other languages
+Add more actuarial methods (Mack method, bootstrap)
 
-Add dark/light theme toggle
+Support more data formats (JSON, Parquet)
 
-Mobile app version
+Add R-like statistical summaries
+
+Localization to other languages
 
 📄 License
 MIT License — Use it anywhere, for anything, with attribution.
@@ -306,6 +364,8 @@ R and RStudio — Interactive statistical computing
 Desmos — Interactive graphing
 
 Arduino Simulator — The "turn knobs, see results" paradigm
+
+Khan Academy — Interactive learning approach
 
 Special thanks to:
 
@@ -355,40 +415,65 @@ markdown
 [![Works Offline](https://img.shields.io/badge/works-offline-blue)]()
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)]()
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)]()
+[![Machine Learning](https://img.shields.io/badge/ML-ready-orange)]()
+[![Econometrics](https://img.shields.io/badge/Econometrics-ready-blue)]()
+[![Actuarial](https://img.shields.io/badge/Actuarial-ready-green)]()
 📊 Project Statistics
 Metric	Value
-File Size	~85KB
-Lines of Code	~2,500
-Number of Tests	10+
+File Size	~120KB
+Lines of Code	~3,500
+Number of Tests	15+
+Tutorials	5
 Dependencies	0
 Browser Support	All modern browsers
 Offline Support	✅ Yes
+Session Storage	✅ Yes
+PDF Export	✅ Yes
 GitHub Pages	✅ Yes
 Cost	Free
-🎯 Roadmap
+🗺️ Roadmap
 ✅ Completed
-☑ Statistics modules (3)
+☑ Statistics modules (5)
 ☑ Econometrics modules (3)
 ☑ Actuarial modules (3)
+☑ Advanced modules (3: VAR, Cointegration, ML)
 ☑ Interactive mode
 ☑ Data import (CSV/Excel)
-☑ Export results
+☑ Export results (Copy, Download, PDF)
 ☑ Random seed control
 ☑ Tooltips
 ☑ Sample data generators
+☑ Session management
+☑ Mobile-optimized view
+☑ Tutorials (5)
 🚧 In Progress
-□ ANOVA module
-□ Chi-square tests
-□ More distribution types
-□ Mobile-optimized view
+□ More distribution types (Beta, Gamma, Weibull)
+□ Kruskal-Wallis test
+□ Friedman test
+□ Mack method for reserving uncertainty
 🔮 Future Plans
-□ User accounts (save sessions)
-□ Export to PDF/CSV
-□ More advanced econometrics (VAR, cointegration)
-□ Machine learning basics (linear classifiers)
-□ Interactive tutorials
+□ Two-way ANOVA
+□ Mixed effects models
+□ Time series forecasting (ARIMA)
+□ Survival analysis (Kaplan-Meier)
+□ Principal Component Analysis (PCA)
+□ Clustering (k-means)
+□ More ML algorithms (kNN, SVM)
+□ Collaboration features (share sessions)
+□ Interactive 3D plots
+□ R/Python code export
+□ API mode for external use
 📝 Changelog
-v1.0.0 (Current)
+v2.0.0 (Current)
+New Modules: ANOVA, Chi-Square, VAR, Cointegration, ML Classifier
+
+New Features: Session save/load, PDF export, Tutorials
+
+Improvements: Mobile optimization, more distribution types
+
+UI: Enhanced tooltips, better responsive design
+
+v1.0.0
 Initial release
 
 9 core modules
@@ -399,15 +484,15 @@ Data import/export
 
 Random seed control
 
-Full documentation
-
 🤝 Contributors
 Your Name — Creator and maintainer
 
 📧 Contact
-GitHub: @201600773
+GitHub: @YOUR_USERNAME
 
 Email: your.email@example.com
+
+Issues: Report here
 
 Made with ❤️ for the statistical community
 
@@ -420,5 +505,22 @@ https://img.shields.io/github/stars/201600773/virtual-stats-lab?style=social
 If you use Virtual Stats Lab in your teaching or research, please cite:
 
 text
-Virtual Stats Lab (Version 1.0). (2024). 
+Virtual Stats Lab (Version 2.0). (2024). 
 Retrieved from https://github.com/201600773/virtual-stats-lab
+📖 Quick Reference
+Module	Tab	Description
+1	Statistics	Two-Sample Comparison
+2	Statistics	Regression Analysis
+3	Statistics	Normality Check
+4	Statistics	One-Way ANOVA
+5	Statistics	Chi-Square Tests
+1	Econometrics	Stationarity (ADF)
+2	Econometrics	Heteroskedasticity
+3	Econometrics	Spurious Regression
+1	Actuarial	Mortality Study
+2	Actuarial	Credibility
+3	Actuarial	Chain-Ladder
+1	Advanced	VAR (Time Series)
+2	Advanced	Cointegration
+3	Advanced	ML Classifier
+Happy Analyzing! 🎉
